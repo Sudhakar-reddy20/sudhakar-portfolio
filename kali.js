@@ -61,6 +61,7 @@
   let status = session.status;
 
   const state = { cwd: HOME, history: [], hIdx: 0 };
+  let challengeRunId = 0;
 
   /* ---------- File helpers ---------- */
   const normalise = (path) => {
@@ -200,6 +201,32 @@
     if (left === 0) finish('lost');
   };
 
+  /* ---------- Always restart when the browser restores this page from its back/forward cache ---------- */
+  const startFreshChallenge = () => {
+    challengeRunId += 1;
+    try { sessionStorage.removeItem(KEY); } catch (err) { /* storage may be blocked */ }
+    try { localStorage.removeItem(CAPTURE_KEY); } catch (err) { /* storage may be blocked */ }
+    session = newSession();
+    status = 'playing';
+    state.cwd = HOME;
+    state.history = [];
+    state.hIdx = 0;
+    out.textContent = '';
+    topPrompt.textContent = promptTop();
+    resultEl.hidden = true;
+    input.disabled = false;
+    input.value = '';
+    copyBtn.textContent = 'Copy flag & return to portfolio';
+    copyBtn.classList.remove('is-copied');
+    intro();
+    renderTimer();
+    input.focus();
+  };
+
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) startFreshChallenge();
+  });
+
   /* ---------- Result panel ---------- */
   const showResult = (kind) => {
     const won = kind === 'won';
@@ -235,9 +262,11 @@
   const scanForFlag = (lines) => {
     if (status !== 'playing') return;
     const matches = lines.join('\n').match(FLAG_RE) || [];
+    const runId = challengeRunId;
     matches.forEach(async (candidate) => {
       if (status !== 'playing' || !window.Challenge) return;
-      if (await window.Challenge.verify(candidate)) finish('won', candidate);
+      const valid = await window.Challenge.verify(candidate);
+      if (valid && runId === challengeRunId && status === 'playing') finish('won', candidate);
     });
   };
 
