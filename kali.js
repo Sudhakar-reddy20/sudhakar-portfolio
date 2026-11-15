@@ -324,8 +324,9 @@
       temp.remove();
     }
     if (copied) {
-      copyBtn.textContent = 'Copied!';
+      copyBtn.textContent = 'Copied! Returning to portfolio…';
       copyBtn.classList.add('is-copied');
+      window.location.href = 'index.html#contact';
     } else {
       flagCode.hidden = false;
       const selection = window.getSelection();
@@ -333,7 +334,7 @@
       range.selectNodeContents(flagCode);
       selection.removeAllRanges();
       selection.addRange(range);
-      copyBtn.textContent = 'Flag selected — press Cmd+C';
+      copyBtn.textContent = 'Copy failed — press Cmd+C, then return';
     }
   });
 
