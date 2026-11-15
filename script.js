@@ -1,10 +1,13 @@
 (() => {
   'use strict';
 
+  const root = document.documentElement;
+  const preloading = root.classList.contains('is-preloading');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const hasGSAP = typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
   const hasLenis = typeof window.Lenis !== 'undefined';
+  const motion = hasGSAP && !reduceMotion;
 
   if (hasGSAP) {
     gsap.registerPlugin(ScrollTrigger);
@@ -13,7 +16,7 @@
   /* ---------- Smooth scrolling (Lenis) ---------- */
   let lenis = null;
   if (hasLenis && !reduceMotion) {
-    lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    lenis = new Lenis({ duration: 1.15, smoothWheel: true });
 
     if (hasGSAP) {
       lenis.on('scroll', ScrollTrigger.update);
@@ -28,7 +31,7 @@
     }
   }
 
-  /* ---------- Smooth in-page links ---------- */
+  /* ---------- In-page links ---------- */
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (event) => {
       const id = link.getAttribute('href').slice(1);
@@ -46,7 +49,6 @@
   });
 
   /* ---------- Active nav highlight ---------- */
-  const sections = document.querySelectorAll('main section[id]');
   const navLinks = document.querySelectorAll('[data-nav]');
 
   const setActive = (id) => {
@@ -69,10 +71,9 @@
     },
     { rootMargin: '-45% 0px -50% 0px' }
   );
-  sections.forEach((section) => navObserver.observe(section));
+  document.querySelectorAll('main section[id]').forEach((section) => navObserver.observe(section));
 
-  /* ---------- Scroll progress and glass nav state ---------- */
-  const navEl = document.querySelector('.glass-nav');
+  /* ---------- Scroll progress ---------- */
   const progressBar = document.querySelector('.scroll-progress');
 
   const onScroll = () => {
@@ -81,12 +82,11 @@
     if (progressBar) {
       progressBar.style.transform = 'scaleX(' + progress.toFixed(4) + ')';
     }
-    navEl.classList.toggle('scrolled', window.scrollY > 40);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* ---------- Typing effect in the hero ---------- */
+  /* ---------- Typing title in the hero ---------- */
   const typedEl = document.getElementById('typed');
   const phrases = ['SOC Analyst', 'Ethical Hacker', 'VAPT Enthusiast'];
 
@@ -95,7 +95,6 @@
     let charCount = phrases[0].length;
     let deleting = true;
 
-    /* Start by holding the first phrase, then delete and type the rest */
     const typeTick = () => {
       const word = phrases[phraseIndex];
 
@@ -136,67 +135,191 @@
     );
   }
 
-  /* ---------- 3D tilt on pointer hover ---------- */
-  if (finePointer && !reduceMotion) {
+  /* ---------- Custom cursor (smooth dot and lagging ring) ---------- */
+  const dot = document.querySelector('.cursor-dot');
+  const ring = document.querySelector('.cursor-ring');
+
+  if (motion && finePointer && dot && ring) {
+    root.classList.add('has-cursor');
+
+    const dotX = gsap.quickTo(dot, 'x', { duration: 0.12, ease: 'power3.out' });
+    const dotY = gsap.quickTo(dot, 'y', { duration: 0.12, ease: 'power3.out' });
+    const ringX = gsap.quickTo(ring, 'x', { duration: 0.5, ease: 'power3.out' });
+    const ringY = gsap.quickTo(ring, 'y', { duration: 0.5, ease: 'power3.out' });
+
+    let shown = false;
+    window.addEventListener(
+      'pointermove',
+      (event) => {
+        if (!shown) {
+          shown = true;
+          gsap.to([dot, ring], { opacity: 1, duration: 0.4 });
+        }
+        dotX(event.clientX);
+        dotY(event.clientY);
+        ringX(event.clientX);
+        ringY(event.clientY);
+      },
+      { passive: true }
+    );
+
+    document.addEventListener('pointerover', (event) => {
+      const hot = event.target.closest && event.target.closest('a, button, .id-card, .row, .project, .stat');
+      ring.classList.toggle('is-hover', Boolean(hot));
+    });
+  }
+
+  /* ---------- 3D tilt with glare (pointer only) ---------- */
+  if (motion && finePointer) {
     document.querySelectorAll('.tilt').forEach((card) => {
+      gsap.set(card, { transformPerspective: 1000 });
+      const tiltX = gsap.quickTo(card, 'rotationX', { duration: 0.8, ease: 'power3.out' });
+      const tiltY = gsap.quickTo(card, 'rotationY', { duration: 0.8, ease: 'power3.out' });
+
       card.addEventListener('pointermove', (event) => {
         const rect = card.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width - 0.5;
-        const y = (event.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform =
-          'perspective(900px) rotateX(' + (-y * 8).toFixed(2) + 'deg) rotateY(' + (x * 10).toFixed(2) + 'deg)';
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        tiltX((0.5 - py) * 12);
+        tiltY((px - 0.5) * 14);
+        card.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+        card.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
       });
+
       card.addEventListener('pointerleave', () => {
-        card.style.transform = '';
+        tiltX(0);
+        tiltY(0);
       });
     });
   }
 
-  /* ---------- Scroll-driven animations (GSAP + ScrollTrigger) ---------- */
-  if (hasGSAP && !reduceMotion) {
-    /* Headings and single items fade up as they enter */
-    gsap.utils.toArray('.reveal').forEach((element) => {
+  /* ---------- Name cube follows the pointer across the hero ---------- */
+  const hero = document.getElementById('home');
+  const cubeWrap = document.querySelector('.cube-wrap');
+
+  if (motion && finePointer && hero && cubeWrap) {
+    const cubeX = gsap.quickTo(cubeWrap, 'rotationX', { duration: 1, ease: 'power3.out' });
+    const cubeY = gsap.quickTo(cubeWrap, 'rotationY', { duration: 1, ease: 'power3.out' });
+
+    hero.addEventListener('pointermove', (event) => {
+      cubeX(((window.innerHeight / 2 - event.clientY) / window.innerHeight) * 20);
+      cubeY(((event.clientX - window.innerWidth / 2) / window.innerWidth) * 28);
+    });
+  }
+
+  /* ---------- GSAP motion ---------- */
+  let intro = null;
+
+  if (motion) {
+    gsap.set('.hero-visual, .cube-wrap, .id-card, .section-title, .mega, .stagger > *', {
+      transformPerspective: 1100,
+    });
+
+    /* Hero intro: paused here, played once the preloader hands over */
+    intro = gsap
+      .timeline({ paused: true, defaults: { ease: 'expo.out' } })
+      .from('.status', { opacity: 0, y: 14, duration: 0.8 }, 0.1)
+      .from('.name .line', { opacity: 0, rotationX: -75, y: 50, transformOrigin: '50% 100%', stagger: 0.12, duration: 1.4 }, 0.2)
+      .from('.role, .hero-line, .cta, .facts', { opacity: 0, y: 18, stagger: 0.08, duration: 0.9 }, 0.6)
+      .from('.id-card', { opacity: 0, y: 70, rotationX: 22, duration: 1.4 }, 0.45)
+      .from('.cube-wrap', { opacity: 0, scale: 0.4, rotationY: -150, duration: 1.8 }, 0.5);
+
+    /* Hero photo drifts in 3D as you scroll past the hero */
+    gsap.to('.hero-visual', {
+      rotationY: -14,
+      rotationX: 6,
+      y: -90,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#home',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.8,
+      },
+    });
+
+    /* Section titles turn into place as they reach the viewport */
+    gsap.utils.toArray('.section-title').forEach((title) => {
       gsap.fromTo(
-        element,
-        { opacity: 0, y: 36 },
+        title,
+        { opacity: 0.15, rotationX: -55, y: 60 },
         {
           opacity: 1,
+          rotationX: 0,
           y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+          ease: 'none',
+          scrollTrigger: {
+            trigger: title,
+            start: 'top 92%',
+            end: 'top 55%',
+            scrub: 0.6,
+          },
         }
       );
     });
 
-    /* Cards rise one after another as each group enters the screen */
-    gsap.utils.toArray('.stagger-group').forEach((group) => {
+    /* Rows, jobs, projects and stats rise in 3D, one after another */
+    gsap.utils.toArray('.stagger').forEach((group) => {
       gsap.from(group.children, {
         opacity: 0,
-        y: 40,
-        stagger: 0.14,
-        duration: 0.85,
+        y: 44,
+        rotationX: -14,
+        transformOrigin: '50% 0%',
+        stagger: 0.12,
+        duration: 1,
         ease: 'power3.out',
-        scrollTrigger: { trigger: group, start: 'top 88%', once: true },
+        scrollTrigger: {
+          trigger: group,
+          start: 'top 86%',
+          once: true,
+        },
       });
     });
 
-    /* Hero text and ID card enter on load */
-    gsap.from('.hero-text > *', {
+    /* Certificate rows fade in (table rows do not take 3D transforms reliably) */
+    gsap.from('.ledger tbody tr', {
       opacity: 0,
-      y: 26,
-      stagger: 0.12,
-      duration: 0.9,
-      ease: 'power3.out',
-      delay: 0.15,
+      stagger: 0.08,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.ledger',
+        start: 'top 86%',
+        once: true,
+      },
     });
-    gsap.from('.id-card', {
-      opacity: 0,
-      y: 50,
-      scale: 0.96,
-      duration: 1.1,
-      ease: 'power3.out',
-      delay: 0.35,
-    });
+
+    /* Footer name rotates up from the page as you reach the bottom */
+    gsap.fromTo(
+      '.mega',
+      { rotationX: 60, opacity: 0, transformOrigin: '50% 100%' },
+      {
+        rotationX: 0,
+        opacity: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.footer',
+          start: 'top 95%',
+          end: 'top 40%',
+          scrub: 0.6,
+        },
+      }
+    );
+
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+  }
+
+  /* ---------- Open the site: after the preloader, or straight away ---------- */
+  const startSite = () => {
+    if (lenis) lenis.start();
+    if (motion) ScrollTrigger.refresh();
+    if (intro) intro.play();
+  };
+
+  if (preloading) {
+    if (lenis) lenis.stop();
+    window.addEventListener('site:ready', startSite, { once: true });
+  } else {
+    startSite();
   }
 })();

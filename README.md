@@ -1,40 +1,48 @@
-# Onteddu Sudhakar Reddy: Cybersecurity Portfolio (v4)
+# Onteddu Sudhakar Reddy: Portfolio (v6)
 
-A static, single-page portfolio for GitHub Pages. No build step, no 3D engine. Plain HTML, CSS and JavaScript, with GSAP and Lenis loaded from CDNs for the scroll animations.
+A static, single-page portfolio for GitHub Pages. No build step. Plain HTML, CSS and JavaScript, with GSAP and Lenis loaded from CDNs for the 3D scroll motion.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| index.html | Page structure and all content |
-| style.css | Layout, glass navigation, ID card, cards and responsive rules |
-| script.js | Typing title, mouse spotlight, tilt, smooth scroll, scroll reveals |
-| photo.jpg | Profile photo shown in the ID-card hero |
-| resume.pdf | Resume linked from the Contact section |
+| index.html | Page structure, the preloader markup and all content |
+| preloader.css | Preloader styles: cracked display, repair tiles, 3D exit |
+| preloader.js | Preloader sequence: cracks, terminal log, tile repair, exit |
+| style.css | Theme, layout, 3D name cube, glass navigation, responsive rules |
+| script.js | Hero intro (plays after the preloader), scroll-linked 3D, tilt, cursor, smooth scroll |
+| photo.jpg | Profile photo in the ID card |
+| resume.pdf | Linked from the Contact section |
+| nptel-hci.pdf | NPTEL certificate, Human-Computer Interfaces (IIT Guwahati) |
+| nptel-sna.pdf | NPTEL certificate, Social Network Analysis (IIT Madras) |
 | README.md | This file |
 
 ## Put it live on GitHub Pages
 
-1. Create a public repository named `sudhakar-portfolio` on GitHub.
-2. Upload all the files above to the root of that repository (drag and drop on the repo page, then Commit changes).
-3. Go to Settings, then Pages. Under "Build and deployment", choose Deploy from a branch, select `main` and `/ (root)`, then Save.
-4. Wait one or two minutes. The site will be at:
-   https://sudhakar-reddy20.github.io/sudhakar-portfolio/
+1. Create a public repository named `sudhakar-portfolio`.
+2. Upload every file above to the repository root.
+3. Settings, then Pages. Deploy from a branch: `main`, folder `/ (root)`. Save.
+4. The site is at https://sudhakar-reddy20.github.io/sudhakar-portfolio/
+
+## The preloader
+
+- Plays on every visit, about 6 seconds. Visitors can press Skip intro or Escape.
+- Sequence: the monitor swings in, cracks spread from an impact point, a terminal log types out, the static tiles are repaired one by one, the cracks heal, and the screen flies toward the viewer before the page opens.
+- Turned off for visitors who prefer reduced motion.
+- Edit the log text in `preloader.js` (the `typeLine` calls in `run`).
+- Edit the repaired word (currently "SR") in `index.html`, inside `.pl-restored`.
+- Edit timing in `preloader.js` (the `wait` values in `run`).
 
 ## Edit the site later
 
-- Text and sections: open index.html and edit the content directly. Each section has its own id (about, experience, projects, lab-work, certificates, skills, contact).
-- Typing title phrases: the list `phrases` near the top of the typing block in script.js.
-- Status badge: the `status-badge` paragraph in index.html.
-- Photo: replace photo.jpg with a new file of the same name (portrait, about 3:4 works best).
-- Resume: replace resume.pdf with a new file of the same name.
-- Colours: the variables at the top of style.css (`--primary`, `--secondary`, and so on).
-- Adding a project or certificate: copy an existing `<article class="card">` block and change the text and link.
-
-After each change, commit the file on GitHub. The site updates within a minute or two.
+- Text and sections: edit index.html. Section ids: about, experience, projects, lab-work, certificates, skills, contact.
+- Typing title: the `phrases` list in script.js.
+- Status badge: the `status` paragraph at the top of the hero in index.html.
+- Cube faces: the six `span.face` elements in index.html.
+- Colours and fonts: the `:root` variables at the top of style.css.
+- Photo or resume: replace photo.jpg or resume.pdf with a file of the same name.
 
 ## Notes
 
-- The page uses Google Fonts (Inter and JetBrains Mono) and CDN scripts (GSAP, ScrollTrigger, Lenis), so it needs an internet connection to show the intended look.
-- Animations turn off automatically for visitors who prefer reduced motion.
-- Mouse-only effects (spotlight and tilt) are skipped on touch screens.
+- Fonts (Instrument Serif, Hanken Grotesk) and CDN scripts (GSAP, ScrollTrigger, Lenis) need an internet connection. The preloader does not need the CDN scripts.
+- The custom cursor and tilt only run on mouse devices.

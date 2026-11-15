@@ -3,18 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Onteddu Sudhakar Reddy, SOC Analyst and Cybersecurity Enthusiast from Guntur, India. Projects, Hackversity labs, certificates and skills." />
-  <title>Onteddu Sudhakar Reddy | SOC Analyst &amp; Cybersecurity</title>
+  <meta name="description" content="Onteddu Sudhakar Reddy, SOC analyst and cybersecurity student from Guntur, India. Projects, Hackversity labs, certificates and skills." />
+  <title>Onteddu Sudhakar Reddy | SOC Analyst</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Instrument+Serif&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="preloader.css" />
+
+  <!-- Runs before the page paints: shows the intro only when motion is allowed.
+       Safety net: if the intro script never finishes, the page opens after 12 seconds. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      root.classList.add('is-preloading');
+      setTimeout(function () {
+        if (!root.classList.contains('is-preloading')) return;
+        root.classList.remove('is-preloading');
+        var p = document.getElementById('preloader');
+        if (p) p.remove();
+        window.dispatchEvent(new Event('site:ready'));
+      }, 12000);
+    })();
+  </script>
 </head>
 <body>
-  <div class="scroll-progress" aria-hidden="true"></div>
-  <div class="spotlight" aria-hidden="true"></div>
+  <!-- PRELOADER: a cracked display that gets repaired, then opens the site -->
+  <div class="preloader" id="preloader" role="dialog" aria-modal="true" aria-label="Display repair intro">
+    <div class="pl-stage">
+      <div class="pl-tilt">
+        <div class="pl-monitor">
+          <div class="pl-bezel">
+            <div class="pl-screen">
+              <div class="pl-restored" aria-hidden="true">SR</div>
+              <div class="pl-tiles" aria-hidden="true"></div>
+              <div class="pl-dead" aria-hidden="true"></div>
+              <pre class="pl-hex" aria-hidden="true"></pre>
+              <div class="pl-glitch" aria-hidden="true"></div>
+              <div class="pl-scan" aria-hidden="true"></div>
+            </div>
+            <div class="pl-glass" aria-hidden="true">
+              <svg class="pl-cracks" viewBox="0 0 1000 625" aria-hidden="true"></svg>
+              <div class="pl-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pl-log" aria-live="polite"></div>
+      <div class="pl-bar" aria-hidden="true"><span></span></div>
+    </div>
+    <button class="pl-skip" type="button">Skip intro</button>
+  </div>
 
   <a class="skip-link" href="#about">Skip to content</a>
+
+  <a class="brand" href="#home" aria-label="Back to top">SR<span class="brand-full"> Onteddu Sudhakar Reddy</span></a>
+
+  <div class="spotlight" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <header class="nav-wrap">
     <nav class="glass-nav" aria-label="Main navigation">
@@ -31,135 +80,136 @@
 
   <main>
     <!-- HERO -->
-    <section id="home" class="hero section" aria-labelledby="hero-title">
+    <section id="home" class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-text">
-          <p class="status-badge mono"><span class="status-dot" aria-hidden="true"></span>Open to SOC roles</p>
-          <h1 id="hero-title">Onteddu Sudhakar Reddy</h1>
-          <p class="typed-line mono" aria-live="polite"><span id="typed">SOC Analyst</span><span class="caret" aria-hidden="true"></span></p>
+          <p class="status"><span class="status-dot" aria-hidden="true"></span>Open to SOC roles</p>
+          <h1 id="hero-title" class="name">
+            <span class="line">Onteddu</span>
+            <span class="line">Sudhakar</span>
+            <span class="line">Reddy</span>
+          </h1>
+          <p class="role"><span id="typed">SOC Analyst</span><span class="caret" aria-hidden="true"></span></p>
           <p class="hero-line">Motivated Computer Science student focused on network security, vulnerability assessment, and security operations.</p>
           <div class="cta">
-            <a class="btn btn-primary" href="#projects">View Projects</a>
+            <a class="btn btn-primary" href="#projects">View projects</a>
             <a class="btn btn-ghost" href="#contact">Contact</a>
           </div>
-          <ul class="hero-facts">
-            <li><span class="mono">100+</span> labs completed</li>
-            <li><span class="mono">3</span> Hackversity certificates</li>
-            <li><span class="mono">Top 3</span> on Hackversity</li>
+          <ul class="facts">
+            <li><strong>100+</strong>labs completed</li>
+            <li><strong>3</strong>Hackversity certificates</li>
+            <li><strong>Top 3</strong>on Hackversity</li>
           </ul>
         </div>
 
-        <div class="id-card tilt" aria-label="Profile card">
-          <div class="id-head mono">SOC &middot; CYBERSECURITY</div>
-          <div class="photo-frame">
-            <img src="photo.jpg" alt="Portrait of Onteddu Sudhakar Reddy" width="900" height="1200" />
-            <span class="scan-line" aria-hidden="true"></span>
+        <div class="hero-visual">
+          <div class="cube-wrap" aria-hidden="true">
+            <div class="cube">
+              <span class="face f-front">Onteddu</span>
+              <span class="face f-back">Sudhakar</span>
+              <span class="face f-right">Reddy</span>
+              <span class="face f-left">SOC</span>
+              <span class="face f-top">VAPT</span>
+              <span class="face f-bottom">Labs</span>
+            </div>
           </div>
-          <div class="id-body">
-            <p class="id-name">Onteddu Sudhakar Reddy</p>
-            <p class="id-role">SOC Analyst &amp; Cybersecurity Enthusiast</p>
-            <p class="id-meta mono">Guntur, Andhra Pradesh, India</p>
-            <p class="id-meta mono">B.Tech CSE &middot; Expected 2027</p>
-          </div>
+
+          <article class="id-card tilt">
+            <div class="id-top">Cybersecurity and SOC</div>
+            <div class="photo">
+              <img src="photo.jpg" alt="Portrait of Onteddu Sudhakar Reddy" width="900" height="1200" />
+              <span class="scan" aria-hidden="true"></span>
+            </div>
+            <div class="id-body">
+              <p class="id-name">Onteddu Sudhakar Reddy</p>
+              <p class="id-role">SOC analyst and cybersecurity enthusiast</p>
+              <p class="id-meta">Guntur, Andhra Pradesh, India<br />B.Tech CSE, expected 2027</p>
+            </div>
+          </article>
         </div>
       </div>
-      <a class="scroll-cue mono" href="#about" aria-label="Scroll to About">scroll</a>
     </section>
 
     <!-- ABOUT -->
     <section id="about" class="section">
-      <div class="container">
-        <h2 class="section-title reveal"><span class="mono">01</span> About</h2>
-        <div class="about-grid">
-          <p class="about-lead reveal">Motivated Computer Science Engineering student with a strong interest in cybersecurity and ethical hacking. Building practical skills in network security, vulnerability assessment, Linux, and security tools through labs, challenges, and self-learning. Aiming for a career in cybersecurity, VAPT, and security operations.</p>
-          <div class="stagger-group about-cards">
-            <div class="card">
-              <h3>Education</h3>
-              <ul class="plain">
-                <li><strong>B.Tech, Computer Science and Engineering</strong><br />Sri Mittapalli College of Engineering, Guntur (expected 2027)</li>
-                <li><strong>Intermediate (MPC)</strong><br />Narayana Junior College (2021 to 2023)</li>
-              </ul>
+      <div class="container split">
+        <h2 class="section-title">About</h2>
+        <div class="split-body">
+          <p class="lead">Motivated Computer Science Engineering student with a strong interest in cybersecurity and ethical hacking. Building practical skills in network security, vulnerability assessment, Linux, and security tools through labs, challenges, and self-learning. Aiming for a career in cybersecurity, VAPT, and security operations.</p>
+          <dl class="rows stagger">
+            <div class="row">
+              <dt>Education</dt>
+              <dd>B.Tech, Computer Science and Engineering, Sri Mittapalli College of Engineering, Guntur (expected 2027)<br />Intermediate (MPC), Narayana Junior College (2021 to 2023)</dd>
             </div>
-            <div class="card">
-              <h3>Focus Areas</h3>
-              <ul class="chips">
-                <li>Cybersecurity</li><li>Ethical Hacking</li><li>VAPT</li><li>Web Application Security</li><li>Network Security</li><li>Security Operations</li>
-              </ul>
+            <div class="row">
+              <dt>Focus areas</dt>
+              <dd>Cybersecurity, ethical hacking, VAPT, web application security, network security, security operations</dd>
             </div>
-            <div class="card">
-              <h3>Location</h3>
-              <p>Guntur, Andhra Pradesh, India</p>
-              <p class="muted">Open to remote work and security internships.</p>
+            <div class="row">
+              <dt>Location</dt>
+              <dd>Guntur, Andhra Pradesh, India. Open to remote work and security internships.</dd>
             </div>
-          </div>
+          </dl>
         </div>
       </div>
     </section>
 
     <!-- EXPERIENCE -->
     <section id="experience" class="section">
-      <div class="container">
-        <h2 class="section-title reveal"><span class="mono">02</span> Experience</h2>
-        <ol class="timeline stagger-group">
-          <li class="timeline-item">
-            <span class="badge badge-upcoming">Upcoming</span>
-            <h3>Live CyberSecurity Expert</h3>
-            <p class="meta">Hackversity, Learner Support &middot; Remote &middot; Paid</p>
-            <ul class="bullets">
-              <li>Starts 5 December 2026 and runs for 12 weeks, ending 27 February 2027.</li>
-              <li>26 hours per week, supporting learners only in the labs and topics approved for the role.</li>
-            </ul>
-          </li>
-          <li class="timeline-item">
-            <h3>IoT Intern, Datavalley</h3>
-            <p class="meta">Internship</p>
-            <ul class="bullets">
-              <li>Gained practical exposure to IoT technologies, connected systems, and application development.</li>
-              <li>Worked on technical tasks while developing problem-solving and teamwork skills.</li>
-            </ul>
-          </li>
-          <li class="timeline-item">
-            <h3>Full Stack Development Intern, ExcelR</h3>
-            <p class="meta">Internship</p>
-            <ul class="bullets">
-              <li>Gained hands-on exposure to full-stack development concepts and application development.</li>
-              <li>Worked with frontend, backend, and database-related technologies.</li>
-            </ul>
-          </li>
-        </ol>
+      <div class="container split">
+        <h2 class="section-title">Experience</h2>
+        <div class="split-body">
+          <ol class="timeline stagger">
+            <li class="job">
+              <p class="job-date">Starts 5 December 2026</p>
+              <h3>Live CyberSecurity Expert</h3>
+              <p class="job-meta">Hackversity, Learner Support. Remote, paid.</p>
+              <ul class="notes">
+                <li>12 weeks, from 5 December 2026 to 27 February 2027.</li>
+                <li>26 hours per week, supporting learners in the labs and topics approved for the role.</li>
+              </ul>
+            </li>
+            <li class="job">
+              <h3>IoT Intern, Datavalley</h3>
+              <p class="job-meta">Internship</p>
+              <ul class="notes">
+                <li>Gained practical exposure to IoT technologies, connected systems, and application development.</li>
+                <li>Worked on technical tasks while developing problem-solving and teamwork skills.</li>
+              </ul>
+            </li>
+            <li class="job">
+              <h3>Full Stack Development Intern, ExcelR</h3>
+              <p class="job-meta">Internship</p>
+              <ul class="notes">
+                <li>Gained hands-on exposure to full-stack development concepts and application development.</li>
+                <li>Worked with frontend, backend, and database-related technologies.</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
       </div>
     </section>
 
     <!-- PROJECTS -->
     <section id="projects" class="section">
-      <div class="container">
-        <h2 class="section-title reveal"><span class="mono">03</span> Projects</h2>
-        <div class="grid stagger-group">
-          <article class="card tilt project-card">
+      <div class="container split">
+        <h2 class="section-title">Projects</h2>
+        <div class="split-body stagger">
+          <article class="project">
             <h3>threatlens</h3>
-            <p>Evidence-driven Python SOC log analysis and SSH threat detection platform.</p>
-            <ul class="tags" aria-label="Technologies">
-              <li>Python</li>
-              <li>SOC</li>
-              <li>Log Analysis</li>
-              <li>SSH</li>
-            </ul>
-            <a class="card-link" href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">View on GitHub &rarr;</a>
+            <p class="project-text">Evidence-driven Python SOC log analysis and SSH threat detection platform.</p>
+            <p class="stack">Python, SOC, log analysis, SSH</p>
+            <a href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">View on GitHub</a>
           </article>
-
-          <article class="card tilt project-card">
+          <article class="project">
             <h3>College Event Management System</h3>
-            <p>Full-stack web app built with Flask, SQLite, HTML/CSS, and JavaScript.</p>
-            <ul class="bullets">
+            <p class="project-text">Full-stack web application built with Flask, SQLite, HTML/CSS, and JavaScript.</p>
+            <ul class="notes">
               <li>Developed a full-stack web application using Flask to manage college events, covering event creation, registration, and participant tracking in one platform.</li>
               <li>Implemented role-based access so admins can create and manage events while students can browse and register.</li>
               <li>Secured user login with salted password hashing, so passwords are never stored in plain text.</li>
             </ul>
-            <ul class="tags" aria-label="Technologies">
-              <li>Flask</li>
-              <li>SQLite</li>
-              <li>JavaScript</li>
-            </ul>
+            <p class="stack">Flask, SQLite, JavaScript</p>
           </article>
         </div>
       </div>
@@ -167,160 +217,170 @@
 
     <!-- LAB WORK -->
     <section id="lab-work" class="section">
-      <div class="container">
-        <h2 class="section-title reveal"><span class="mono">04</span> Lab Work (Hackversity)</h2>
-        <div class="stats stagger-group">
-          <div class="stat">
-            <div class="stat-value">100+</div>
-            <div class="stat-label">Hands-on labs completed</div>
+      <div class="container split">
+        <h2 class="section-title">Lab work</h2>
+        <div class="split-body">
+          <div class="stats stagger">
+            <div class="stat">
+              <p class="stat-value">100+</p>
+              <p class="stat-label">Hands-on labs completed on Hackversity</p>
+            </div>
+            <div class="stat">
+              <p class="stat-value">12 / 14</p>
+              <p class="stat-label">Badges earned, with 2 in progress</p>
+            </div>
+            <div class="stat">
+              <p class="stat-value">118 / 118</p>
+              <p class="stat-label">Collection cards collected</p>
+            </div>
+            <div class="stat">
+              <p class="stat-value">Top 3</p>
+              <p class="stat-label">Leaderboard placement since joining</p>
+            </div>
           </div>
-          <div class="stat">
-            <div class="stat-value">12 / 14</div>
-            <div class="stat-label">Badges earned, 2 in progress</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">118 / 118</div>
-            <div class="stat-label">Collection cards collected</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">Top 3</div>
-            <div class="stat-label">Leaderboard placement since joining</div>
-          </div>
+          <p class="lab-note">Joined Hackversity about a month ago and has stayed in the top three of the leaderboard ever since.</p>
+          <a href="https://hackversity.com" target="_blank" rel="noopener noreferrer">Visit Hackversity</a>
         </div>
-        <p class="lab-note reveal">Joined Hackversity about a month ago and has stayed in the top three of the leaderboard ever since.</p>
-        <a class="btn btn-ghost reveal" href="https://hackversity.com" target="_blank" rel="noopener noreferrer">Visit Hackversity &rarr;</a>
       </div>
     </section>
 
     <!-- CERTIFICATES -->
     <section id="certificates" class="section">
-      <div class="container">
-        <h2 class="section-title reveal"><span class="mono">05</span> Certificates</h2>
-        <div class="grid stagger-group">
-          <article class="card cert-card">
-            <p class="cert-tag mono">HACKVERSITY &middot; STAGE 1</p>
-            <h3>Computer &amp; Linux Foundations</h3>
-            <p>20 hands-on labs, each solved on a real machine. Issued 22 October 2026.</p>
-            <a class="card-link" href="https://hackversity.com/certificates/RsTHoFTfNN32XMA8WUlrrA" target="_blank" rel="noopener noreferrer">Verify certificate &rarr;</a>
-          </article>
-          <article class="card cert-card">
-            <p class="cert-tag mono">HACKVERSITY &middot; STAGE 2</p>
-            <h3>Linux Mastery</h3>
-            <p>20 hands-on labs, each solved on a real machine. Issued 24 October 2026.</p>
-            <a class="card-link" href="https://hackversity.com/certificates/tEIUWH8WaPYvzFXYLBnx9g" target="_blank" rel="noopener noreferrer">Verify certificate &rarr;</a>
-          </article>
-          <article class="card cert-card">
-            <p class="cert-tag mono">HACKVERSITY &middot; STAGE 3</p>
-            <h3>Networks &amp; Security Principles</h3>
-            <p>60 hands-on labs, each solved on a real machine. Issued 31 October 2026.</p>
-            <a class="card-link" href="https://hackversity.com/certificates/Qw_BNqw1exk5wyFxEawIog" target="_blank" rel="noopener noreferrer">Verify certificate &rarr;</a>
-          </article>
-          <article class="card cert-card">
-            <p class="cert-tag mono">TRYHACKME</p>
-            <h3>Offensive Security Intro</h3>
-            <p>Completed.</p>
-          </article>
-          <article class="card cert-card">
-            <p class="cert-tag mono">HACKERRANK</p>
-            <h3>Python (Basic)</h3>
-            <p>Certification.</p>
-          </article>
-          <article class="card cert-card">
-            <p class="cert-tag mono">HACKERRANK</p>
-            <h3>SQL (Basic)</h3>
-            <p>Certification.</p>
-          </article>
-          <article class="card cert-card">
-            <p class="cert-tag mono">NPTEL &middot; IIT GUWAHATI &middot; ELITE</p>
-            <h3>Design &amp; Implementation of Human-Computer Interfaces</h3>
-            <p>Consolidated score 62%. 12-week course, July to October 2026.</p>
-            <a class="card-link" href="nptel-hci.pdf" target="_blank" rel="noopener noreferrer">View certificate &rarr;</a>
-          </article>
-          <article class="card cert-card">
-            <p class="cert-tag mono">NPTEL &middot; IIT MADRAS</p>
-            <h3>Social Network Analysis</h3>
-            <p>Consolidated score 55%. 12-week course, July to October 2026.</p>
-            <a class="card-link" href="nptel-sna.pdf" target="_blank" rel="noopener noreferrer">View certificate &rarr;</a>
-          </article>
+      <div class="container split">
+        <h2 class="section-title">Certificates</h2>
+        <div class="split-body">
+          <table class="ledger">
+            <thead>
+              <tr>
+                <th scope="col">Certificate</th>
+                <th scope="col">Issued by</th>
+                <th scope="col">Detail</th>
+                <th scope="col">Proof</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cert-name">Computer &amp; Linux Foundations</td>
+                <td>Hackversity, Stage 1</td>
+                <td>20 hands-on labs. Issued 22 October 2026.</td>
+                <td><a href="https://hackversity.com/certificates/RsTHoFTfNN32XMA8WUlrrA" target="_blank" rel="noopener noreferrer">Verify</a></td>
+              </tr>
+              <tr>
+                <td class="cert-name">Linux Mastery</td>
+                <td>Hackversity, Stage 2</td>
+                <td>20 hands-on labs. Issued 24 October 2026.</td>
+                <td><a href="https://hackversity.com/certificates/tEIUWH8WaPYvzFXYLBnx9g" target="_blank" rel="noopener noreferrer">Verify</a></td>
+              </tr>
+              <tr>
+                <td class="cert-name">Networks &amp; Security Principles</td>
+                <td>Hackversity, Stage 3</td>
+                <td>60 hands-on labs. Issued 31 October 2026.</td>
+                <td><a href="https://hackversity.com/certificates/Qw_BNqw1exk5wyFxEawIog" target="_blank" rel="noopener noreferrer">Verify</a></td>
+              </tr>
+              <tr>
+                <td class="cert-name">Offensive Security Intro</td>
+                <td>TryHackMe</td>
+                <td>Completed</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="cert-name">Python (Basic)</td>
+                <td>HackerRank</td>
+                <td>Certification</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="cert-name">SQL (Basic)</td>
+                <td>HackerRank</td>
+                <td>Certification</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td class="cert-name">Design &amp; Implementation of Human-Computer Interfaces</td>
+                <td>NPTEL, IIT Guwahati</td>
+                <td>Elite. Consolidated score 62%. July to October 2026, 12 weeks.</td>
+                <td><a href="nptel-hci.pdf" target="_blank" rel="noopener noreferrer">View PDF</a></td>
+              </tr>
+              <tr>
+                <td class="cert-name">Social Network Analysis</td>
+                <td>NPTEL, IIT Madras</td>
+                <td>Consolidated score 55%. July to October 2026, 12 weeks.</td>
+                <td><a href="nptel-sna.pdf" target="_blank" rel="noopener noreferrer">View PDF</a></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
 
     <!-- SKILLS -->
     <section id="skills" class="section">
-      <div class="container">
-        <h2 class="section-title reveal"><span class="mono">06</span> Skills</h2>
-        <div class="grid stagger-group">
-          <div class="card skill-card tilt">
-            <h3 class="mono">Security Tools</h3>
-            <ul class="chips">
-              <li>Nmap</li><li>Burp Suite</li><li>Wireshark</li><li>Metasploit Framework</li><li>Kali Linux</li>
-            </ul>
-          </div>
-          <div class="card skill-card tilt">
-            <h3 class="mono">Networking</h3>
-            <ul class="chips">
-              <li>TCP/IP</li><li>OSI Model</li><li>Ports &amp; Protocols</li><li>Basic Network Troubleshooting</li>
-            </ul>
-          </div>
-          <div class="card skill-card tilt">
-            <h3 class="mono">Operating Systems</h3>
-            <ul class="chips">
-              <li>Linux</li><li>Kali Linux</li><li>Windows</li><li>macOS</li>
-            </ul>
-          </div>
-          <div class="card skill-card tilt">
-            <h3 class="mono">Programming &amp; Scripting</h3>
-            <ul class="chips">
-              <li>Python</li><li>Bash</li><li>C</li><li>SQL</li><li>JavaScript</li><li>HTML</li><li>CSS</li>
-            </ul>
-          </div>
-          <div class="card skill-card tilt">
-            <h3 class="mono">Areas of Interest</h3>
-            <ul class="chips">
-              <li>Cybersecurity</li><li>Ethical Hacking</li><li>VAPT</li><li>Web Application Security</li><li>Network Security</li><li>Security Operations</li>
-            </ul>
-          </div>
+      <div class="container split">
+        <h2 class="section-title">Skills</h2>
+        <div class="split-body">
+          <dl class="rows stagger">
+            <div class="row">
+              <dt>Security tools</dt>
+              <dd>Nmap, Burp Suite, Wireshark, Metasploit Framework, Kali Linux</dd>
+            </div>
+            <div class="row">
+              <dt>Networking</dt>
+              <dd>TCP/IP, OSI model, ports and protocols, basic network troubleshooting</dd>
+            </div>
+            <div class="row">
+              <dt>Operating systems</dt>
+              <dd>Linux, Kali Linux, Windows, macOS</dd>
+            </div>
+            <div class="row">
+              <dt>Programming and scripting</dt>
+              <dd>Python, Bash, C, SQL, JavaScript, HTML, CSS</dd>
+            </div>
+            <div class="row">
+              <dt>Areas of interest</dt>
+              <dd>Cybersecurity, ethical hacking, VAPT, web application security, network security, security operations</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>
 
     <!-- CONTACT -->
     <section id="contact" class="section">
-      <div class="container">
-        <h2 class="section-title reveal"><span class="mono">07</span> Contact</h2>
-        <div class="contact-grid stagger-group">
-          <a class="contact-link" href="mailto:onteddusudhakarreddy20@gmail.com">
-            <span>Email</span>
-            <strong>onteddusudhakarreddy20@gmail.com</strong>
-          </a>
-          <a class="contact-link" href="https://www.linkedin.com/in/sudhakar-reddy1920/" target="_blank" rel="noopener noreferrer">
-            <span>LinkedIn</span>
-            <strong>sudhakar-reddy1920</strong>
-          </a>
-          <a class="contact-link" href="https://github.com/Sudhakar-reddy20" target="_blank" rel="noopener noreferrer">
-            <span>GitHub</span>
-            <strong>Sudhakar-reddy20</strong>
-          </a>
-          <a class="contact-link" href="tel:+918125513135">
-            <span>Phone</span>
-            <strong>+91 8125513135</strong>
-          </a>
+      <div class="container split">
+        <h2 class="section-title">Contact</h2>
+        <div class="split-body">
+          <a class="contact-email" href="mailto:onteddusudhakarreddy20@gmail.com">onteddusudhakarreddy20@gmail.com</a>
+          <dl class="rows contact-rows stagger">
+            <div class="row">
+              <dt>LinkedIn</dt>
+              <dd><a href="https://www.linkedin.com/in/sudhakar-reddy1920/" target="_blank" rel="noopener noreferrer">sudhakar-reddy1920</a></dd>
+            </div>
+            <div class="row">
+              <dt>GitHub</dt>
+              <dd><a href="https://github.com/Sudhakar-reddy20" target="_blank" rel="noopener noreferrer">Sudhakar-reddy20</a></dd>
+            </div>
+            <div class="row">
+              <dt>Phone</dt>
+              <dd><a href="tel:+918125513135">+91 8125513135</a></dd>
+            </div>
+          </dl>
+          <a class="btn btn-primary resume-btn" href="resume.pdf" download>Download resume</a>
         </div>
-        <a class="btn btn-primary reveal" href="resume.pdf" download>Download Resume</a>
       </div>
     </section>
   </main>
 
-  <footer>
+  <footer class="footer">
     <div class="container">
-      <p>&copy; 2026 Onteddu Sudhakar Reddy</p>
+      <p class="footer-note">&copy; 2026 Onteddu Sudhakar Reddy</p>
     </div>
+    <p class="mega" aria-hidden="true">Sudhakar</p>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="preloader.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
