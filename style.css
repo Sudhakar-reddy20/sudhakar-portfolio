@@ -1,12 +1,14 @@
-/* Gotham theme: night-black city, bat-signal yellow, heavy geometric type */
+/* Hacker blue theme: night-black terminal base, electric-blue accent, heavy geometric type */
 :root {
-  --ink: #07080b;
-  --surface: #0f1116;
-  --paper: #ecedf0;
-  --body: #b8bcc6;
-  --slate: #7b8290;
-  --amber: #ffd23f;
-  --rule: #22262e;
+  --ink: #05070c;
+  --surface: #0c1119;
+  --paper: #e8f1fb;
+  --body: #b3c2d6;
+  --slate: #6f7f96;
+  --accent: #3aa0ff;
+  --accent-glow: rgba(58, 160, 255, 0.7);
+  --rule: #1a2433;
+  --glass: rgba(12, 17, 25, 0.7);
   --serif: 'Montserrat', Arial, sans-serif;
   --sans: 'Montserrat', Arial, sans-serif;
 }
@@ -37,18 +39,24 @@ html.lenis body {
   overflow: hidden;
 }
 
+/* Body stays transparent so the fixed glow and grid behind the page stay visible */
 body {
   font-family: var(--sans);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.65;
   color: var(--paper);
-  background: var(--ink);
+  background: transparent;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Bat-signal glow from the top right, fixed behind the page */
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+/* Accent glow from the top right, fixed behind the page */
 body::before {
   content: '';
   position: fixed;
@@ -56,13 +64,28 @@ body::before {
   right: -25vw;
   width: 95vw;
   height: 95vh;
-  background: radial-gradient(closest-side, rgba(255, 210, 63, 0.11), transparent);
+  background: radial-gradient(closest-side, rgba(58, 160, 255, 0.12), transparent);
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Faint blueprint grid, fading out toward the bottom */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(58, 160, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(58, 160, 255, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
   pointer-events: none;
   z-index: -2;
 }
 
 a {
-  color: var(--amber);
+  color: var(--accent);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
@@ -74,7 +97,7 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--amber);
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
   border-radius: 2px;
 }
@@ -88,7 +111,7 @@ img {
   position: absolute;
   left: -999px;
   top: 8px;
-  background: var(--amber);
+  background: var(--accent);
   color: var(--ink);
   padding: 8px 12px;
   z-index: 200;
@@ -111,7 +134,7 @@ img {
   pointer-events: none;
   background: radial-gradient(
     520px circle at var(--mx, 50%) var(--my, 30%),
-    rgba(255, 210, 63, 0.06),
+    rgba(58, 160, 255, 0.07),
     transparent 70%
   );
 }
@@ -136,7 +159,8 @@ html.has-cursor * {
   width: 6px;
   height: 6px;
   margin: -3px 0 0 -3px;
-  background: var(--amber);
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .cursor-ring {
@@ -144,7 +168,7 @@ html.has-cursor * {
   width: 40px;
   height: 40px;
   margin: -20px 0 0 -20px;
-  border: 1px solid rgba(255, 210, 63, 0.7);
+  border: 1px solid rgba(58, 160, 255, 0.7);
   transition: width 0.35s ease, height 0.35s ease, margin 0.35s ease, background-color 0.35s ease;
 }
 
@@ -152,7 +176,7 @@ html.has-cursor * {
   width: 64px;
   height: 64px;
   margin: -32px 0 0 -32px;
-  background-color: rgba(255, 210, 63, 0.08);
+  background-color: rgba(58, 160, 255, 0.08);
 }
 
 .scroll-progress {
@@ -161,7 +185,8 @@ html.has-cursor * {
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--amber);
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
   transform-origin: 0 50%;
   transform: scaleX(0);
   z-index: 150;
@@ -179,8 +204,13 @@ html.has-cursor * {
   line-height: 1;
   letter-spacing: 0.02em;
   color: var(--ink);
-  background: var(--amber);
+  background: var(--accent);
   text-decoration: none;
+}
+
+.brand:hover {
+  color: var(--ink);
+  box-shadow: 0 0 22px var(--accent-glow);
 }
 
 .brand-full {
@@ -190,59 +220,119 @@ html.has-cursor * {
   color: var(--ink);
 }
 
-/* ---------- Glass navigation (bottom centre) ---------- */
-.nav-wrap {
+/* ---------- Side navigation: a slim glass rail on the left edge ---------- */
+.side-nav {
   position: fixed;
-  bottom: 18px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  padding: 0 12px;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 100;
-  pointer-events: none;
-}
-
-.glass-nav {
-  pointer-events: auto;
   display: flex;
+  flex-direction: column;
   gap: 2px;
-  padding: 5px;
-  max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-  background: rgba(15, 17, 22, 0.6);
-  border: 1px solid rgba(236, 237, 240, 0.1);
-  border-radius: 4px;
-  backdrop-filter: blur(18px) saturate(120%);
-  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  padding: 8px 6px;
+  background: var(--glass);
+  border: 1px solid rgba(232, 241, 251, 0.08);
+  border-radius: 999px;
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
-.glass-nav::-webkit-scrollbar {
-  display: none;
-}
-
-.glass-nav a {
-  padding: 8px 13px;
-  font-size: 0.8rem;
+.side-nav a {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px 6px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   color: var(--slate);
   white-space: nowrap;
   text-decoration: none;
-  border-radius: 2px;
   transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-.glass-nav a:hover {
+.side-nav a:hover,
+.side-nav a:focus-visible {
   color: var(--paper);
-  background: rgba(236, 237, 240, 0.06);
+  background: rgba(232, 241, 251, 0.06);
 }
 
-.glass-nav a.active {
+.side-nav .dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.side-nav .label {
+  max-width: 0;
+  opacity: 0;
+  margin-left: 0;
+  overflow: hidden;
+  transition: max-width 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin-left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Labels slide out while the rail is hovered or has keyboard focus */
+.side-nav:hover .label,
+.side-nav:focus-within .label {
+  max-width: 160px;
+  opacity: 1;
+  margin-left: 10px;
+}
+
+.side-nav a.active {
+  color: var(--accent);
+}
+
+.side-nav a.active .dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* ---------- Back to top ---------- */
+.to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--glass);
+  border: 1px solid rgba(58, 160, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.to-top svg {
+  width: 20px;
+  height: 20px;
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.to-top:hover,
+.to-top:focus-visible {
   color: var(--ink);
-  background: var(--amber);
+  background: var(--accent);
+  box-shadow: 0 0 22px var(--accent-glow);
 }
 
 /* ---------- Buttons ---------- */
@@ -257,7 +347,7 @@ html.has-cursor * {
   border-radius: 2px;
   border: 1px solid transparent;
   text-decoration: none;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, translate 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, translate 0.3s ease;
 }
 
 .btn:hover {
@@ -265,13 +355,14 @@ html.has-cursor * {
 }
 
 .btn-primary {
-  background: var(--amber);
+  background: var(--accent);
   color: var(--ink);
 }
 
 .btn-primary:hover {
   background: var(--paper);
   color: var(--ink);
+  box-shadow: 0 0 24px var(--accent-glow);
 }
 
 .btn-ghost {
@@ -280,8 +371,8 @@ html.has-cursor * {
 }
 
 .btn-ghost:hover {
-  border-color: var(--amber);
-  color: var(--amber);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---------- Hero ---------- */
@@ -316,34 +407,51 @@ html.has-cursor * {
   padding: 120px 0 170px;
 }
 
+.status-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin-bottom: 26px;
+}
+
 .status {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 26px;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--accent);
 }
 
 .status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--amber);
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
   animation: ping 2.4s ease-out infinite;
 }
 
 @keyframes ping {
   0% {
-    box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.55);
+    box-shadow: 0 0 0 0 rgba(58, 160, 255, 0.55);
   }
   75%,
   100% {
-    box-shadow: 0 0 0 10px rgba(255, 210, 63, 0);
+    box-shadow: 0 0 0 10px rgba(58, 160, 255, 0);
   }
+}
+
+.local-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-variant-numeric: tabular-nums;
 }
 
 .name {
@@ -373,7 +481,8 @@ html.has-cursor * {
   height: 1em;
   margin-left: 6px;
   vertical-align: -0.15em;
-  background: var(--amber);
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
   animation: blink 1.05s steps(1) infinite;
 }
 
@@ -423,7 +532,7 @@ html.has-cursor * {
   margin-bottom: 6px;
 }
 
-/* ---------- Hero visual: 3D name cube and ID card ---------- */
+/* ---------- Hero visual: ID card ---------- */
 .hero-visual {
   position: relative;
   justify-self: end;
@@ -431,83 +540,14 @@ html.has-cursor * {
   max-width: 360px;
 }
 
-.cube-wrap {
-  --s: 150px;
-  position: absolute;
-  z-index: 3;
-  top: calc(var(--s) * -0.5);
-  right: calc(var(--s) * -0.42);
-  width: var(--s);
-  height: var(--s);
-  perspective: 700px;
-  pointer-events: none;
-}
-
-.cube {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  animation: spin 18s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotateX(-16deg) rotateY(0deg);
-  }
-  to {
-    transform: rotateX(-16deg) rotateY(360deg);
-  }
-}
-
-.face {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(15, 17, 22, 0.95);
-  border: 1px solid rgba(255, 210, 63, 0.6);
-  font-family: var(--sans);
-  font-size: calc(var(--s) * 0.105);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--amber);
-  text-align: center;
-}
-
-.f-front {
-  transform: translateZ(calc(var(--s) / 2));
-}
-
-.f-back {
-  transform: rotateY(180deg) translateZ(calc(var(--s) / 2));
-}
-
-.f-right {
-  transform: rotateY(90deg) translateZ(calc(var(--s) / 2));
-}
-
-.f-left {
-  transform: rotateY(-90deg) translateZ(calc(var(--s) / 2));
-}
-
-.f-top {
-  transform: rotateX(90deg) translateZ(calc(var(--s) / 2));
-}
-
-.f-bottom {
-  transform: rotateX(-90deg) translateZ(calc(var(--s) / 2));
-}
-
 .id-card {
   position: relative;
   z-index: 2;
   padding: 14px 14px 20px;
   background: var(--surface);
-  border: 1px solid rgba(255, 210, 63, 0.3);
+  border: 1px solid rgba(58, 160, 255, 0.3);
   border-radius: 2px;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(58, 160, 255, 0.08);
   overflow: hidden;
 }
 
@@ -536,7 +576,7 @@ html.has-cursor * {
   overflow: hidden;
   aspect-ratio: 3 / 4;
   border-radius: 1px;
-  background: #0b0c10;
+  background: #070b11;
 }
 
 .photo img {
@@ -552,8 +592,8 @@ html.has-cursor * {
   right: 0;
   top: 0;
   height: 2px;
-  background: var(--amber);
-  box-shadow: 0 0 16px rgba(255, 210, 63, 0.7);
+  background: var(--accent);
+  box-shadow: 0 0 16px var(--accent-glow);
   animation: scan 4.5s linear infinite;
 }
 
@@ -656,7 +696,7 @@ html.has-cursor * {
 .row dt {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--amber);
+  color: var(--accent);
 }
 
 .row dd {
@@ -685,7 +725,7 @@ html.has-cursor * {
   margin-bottom: 8px;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--amber);
+  color: var(--accent);
 }
 
 .job h3 {
@@ -722,7 +762,8 @@ html.has-cursor * {
   top: 0.8em;
   width: 10px;
   height: 2px;
-  background: var(--amber);
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-glow);
 }
 
 /* ---------- Projects ---------- */
@@ -778,6 +819,7 @@ html.has-cursor * {
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.02em;
+  color: var(--paper);
 }
 
 .stat-label {
@@ -835,19 +877,57 @@ html.has-cursor * {
 /* ---------- Contact ---------- */
 .contact-email {
   display: inline-block;
-  margin-bottom: 40px;
   font-size: clamp(1.3rem, 2.8vw, 2rem);
   font-weight: 700;
   line-height: 1.2;
   color: var(--paper);
   text-decoration: none;
   word-break: break-word;
-  border-bottom: 2px solid var(--amber);
+  border-bottom: 2px solid var(--accent);
   padding-bottom: 6px;
 }
 
 .contact-email:hover {
-  color: var(--amber);
+  color: var(--accent);
+}
+
+/* Copy buttons (email and phone) */
+.copy-row {
+  margin: 18px 0 40px;
+}
+
+.with-copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.copy-btn {
+  padding: 7px 12px;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--slate);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.copy-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.copy-btn.is-copied {
+  color: var(--ink);
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 16px var(--accent-glow);
 }
 
 .resume-btn {
@@ -896,12 +976,6 @@ html.has-cursor * {
     max-width: 340px;
   }
 
-  .cube-wrap {
-    --s: 118px;
-    top: -52px;
-    right: -8px;
-  }
-
   .split {
     grid-template-columns: 1fr;
     gap: 28px;
@@ -912,14 +986,42 @@ html.has-cursor * {
   }
 }
 
-@media (max-width: 600px) {
-  .nav-wrap {
-    bottom: 10px;
+@media (max-width: 900px) {
+  /* Narrow screens: the rail moves to the right edge, shows dots only */
+  .side-nav {
+    left: auto;
+    right: 6px;
+    padding: 6px 4px;
   }
 
-  .glass-nav a {
-    padding: 7px 9px;
-    font-size: 0.72rem;
+  .side-nav a {
+    padding: 5px;
+  }
+
+  .side-nav .dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .side-nav .label {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Wider phone gutter, so the side rail never sits over text */
+  .container {
+    width: min(1160px, 84vw);
+  }
+
+  .side-nav {
+    right: 4px;
+    padding: 6px 3px;
+  }
+
+  .to-top {
+    right: 14px;
+    bottom: 14px;
   }
 
   .brand-full {
@@ -956,6 +1058,76 @@ html.has-cursor * {
 
   .ledger .cert-name {
     margin-bottom: 4px;
+  }
+}
+
+/* ---------- Print: a clean light copy for a paper CV ---------- */
+@media print {
+  :root {
+    --ink: #ffffff;
+    --surface: #ffffff;
+    --paper: #0b1220;
+    --body: #1f2937;
+    --slate: #4b5563;
+    --accent: #0b5cad;
+    --rule: #cbd5e1;
+  }
+
+  html,
+  body {
+    background: #ffffff;
+    color: var(--paper);
+  }
+
+  .preloader,
+  .side-nav,
+  .to-top,
+  .cursor-dot,
+  .cursor-ring,
+  .spotlight,
+  .scroll-progress,
+  .brand,
+  .skyline,
+  .skip-link,
+  .copy-btn,
+  .mega,
+  .btn,
+  .scan {
+    display: none !important;
+  }
+
+  body::before,
+  body::after {
+    display: none;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-grid {
+    padding: 40px 0;
+  }
+
+  .section {
+    padding-top: 36px;
+  }
+
+  .split .section-title {
+    position: static;
+  }
+
+  .job,
+  .project,
+  .row,
+  .stat {
+    break-inside: avoid;
+  }
+
+  main *,
+  .hero * {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 

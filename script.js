@@ -31,7 +31,7 @@
     }
   }
 
-  /* ---------- In-page links ---------- */
+  /* ---------- In-page links (brand, side rail, back to top, buttons) ---------- */
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (event) => {
       const id = link.getAttribute('href').slice(1);
@@ -48,7 +48,7 @@
     });
   });
 
-  /* ---------- Active nav highlight ---------- */
+  /* ---------- Active section in the side rail ---------- */
   const navLinks = document.querySelectorAll('[data-nav]');
 
   const setActive = (id) => {
@@ -73,8 +73,9 @@
   );
   document.querySelectorAll('main section[id]').forEach((section) => navObserver.observe(section));
 
-  /* ---------- Scroll progress ---------- */
+  /* ---------- Scroll progress and back-to-top visibility ---------- */
   const progressBar = document.querySelector('.scroll-progress');
+  const toTop = document.querySelector('.to-top');
 
   const onScroll = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -82,9 +83,85 @@
     if (progressBar) {
       progressBar.style.transform = 'scaleX(' + progress.toFixed(4) + ')';
     }
+    if (toTop) {
+      toTop.classList.toggle('is-visible', window.scrollY > 600);
+    }
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  /* ---------- Copy buttons (email and phone) ---------- */
+  const fallbackCopy = (text) => {
+    const field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.opacity = '0';
+    document.body.appendChild(field);
+    field.select();
+
+    let ok = false;
+    try {
+      ok = document.execCommand('copy');
+    } catch (err) {
+      ok = false;
+    }
+    field.remove();
+    return ok ? Promise.resolve() : Promise.reject(new Error('copy failed'));
+  };
+
+  const copyText = (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    }
+    return fallbackCopy(text);
+  };
+
+  document.querySelectorAll('.copy-btn').forEach((button) => {
+    const original = button.textContent;
+    let timer = null;
+
+    const flash = (label, copied) => {
+      button.textContent = label;
+      button.classList.toggle('is-copied', copied);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        button.textContent = original;
+        button.classList.remove('is-copied');
+      }, 1800);
+    };
+
+    button.addEventListener('click', () => {
+      copyText(button.dataset.copy).then(
+        () => flash('Copied', true),
+        () => flash('Copy failed', false)
+      );
+    });
+  });
+
+  /* ---------- Local time in Guntur (India Standard Time) ---------- */
+  const localTime = document.getElementById('local-time');
+  if (localTime) {
+    let formatter = null;
+    try {
+      formatter = new Intl.DateTimeFormat('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      });
+    } catch (err) {
+      formatter = null;
+    }
+
+    const updateTime = () => {
+      if (formatter) {
+        localTime.textContent = 'Guntur, ' + formatter.format(new Date()) + ' IST';
+      }
+    };
+    updateTime();
+    setInterval(updateTime, 30000);
+  }
 
   /* ---------- Typing title in the hero ---------- */
   const typedEl = document.getElementById('typed');
@@ -193,36 +270,21 @@
     });
   }
 
-  /* ---------- Name cube follows the pointer across the hero ---------- */
-  const hero = document.getElementById('home');
-  const cubeWrap = document.querySelector('.cube-wrap');
-
-  if (motion && finePointer && hero && cubeWrap) {
-    const cubeX = gsap.quickTo(cubeWrap, 'rotationX', { duration: 1, ease: 'power3.out' });
-    const cubeY = gsap.quickTo(cubeWrap, 'rotationY', { duration: 1, ease: 'power3.out' });
-
-    hero.addEventListener('pointermove', (event) => {
-      cubeX(((window.innerHeight / 2 - event.clientY) / window.innerHeight) * 20);
-      cubeY(((event.clientX - window.innerWidth / 2) / window.innerWidth) * 28);
-    });
-  }
-
   /* ---------- GSAP motion ---------- */
   let intro = null;
 
   if (motion) {
-    gsap.set('.hero-visual, .cube-wrap, .id-card, .section-title, .mega, .stagger > *', {
+    gsap.set('.hero-visual, .id-card, .section-title, .mega, .stagger > *', {
       transformPerspective: 1100,
     });
 
     /* Hero intro: paused here, played once the preloader hands over */
     intro = gsap
       .timeline({ paused: true, defaults: { ease: 'expo.out' } })
-      .from('.status', { opacity: 0, y: 14, duration: 0.8 }, 0.1)
+      .from('.status-row', { opacity: 0, y: 14, duration: 0.8 }, 0.1)
       .from('.name .line', { opacity: 0, rotationX: -75, y: 50, transformOrigin: '50% 100%', stagger: 0.12, duration: 1.4 }, 0.2)
       .from('.role, .hero-line, .cta, .facts', { opacity: 0, y: 18, stagger: 0.08, duration: 0.9 }, 0.6)
-      .from('.id-card', { opacity: 0, y: 70, rotationX: 22, duration: 1.4 }, 0.45)
-      .from('.cube-wrap', { opacity: 0, scale: 0.4, rotationY: -150, duration: 1.8 }, 0.5);
+      .from('.id-card', { opacity: 0, y: 70, rotationX: 22, duration: 1.4 }, 0.45);
 
     /* Hero photo drifts in 3D as you scroll past the hero */
     gsap.to('.hero-visual', {
