@@ -3,6 +3,7 @@
 
   const LIMIT_MS = 5 * 60 * 1000;
   const KEY = 'sr-kali-session';
+  const CAPTURE_KEY = 'sr-kali-captured-flag';
   const HOME = '/home/kali';
   const ENCODED_LOOT = 'RkxBR3tzcmlfbWl0dGFwYWxsaX0=';
   const FLAG_RE = /FLAG\{[^}\n]+\}/g;
@@ -62,7 +63,19 @@
   };
 
   let session = readSession();
+  let savedFlag = '';
+  try { savedFlag = localStorage.getItem(CAPTURE_KEY) || ''; } catch (err) { /* storage may be blocked */ }
   if (!session || typeof session.deadline !== 'number') session = newSession();
+  if (savedFlag) {
+    session = { status: 'won', deadline: session.deadline, flag: savedFlag };
+    writeSession(session);
+  } else if (session.status === 'won' && !session.flag) {
+    try { session.flag = new TextDecoder().decode(Uint8Array.from(atob(ENCODED_LOOT), c => c.charCodeAt(0))); } catch (err) { /* keep legacy session usable */ }
+    if (session.flag) {
+      try { localStorage.setItem(CAPTURE_KEY, session.flag); } catch (err) { /* storage may be blocked */ }
+      writeSession(session);
+    }
+  }
   if (session.status === 'playing' && Date.now() >= session.deadline) {
     session = { status: 'lost', deadline: session.deadline };
     writeSession(session);
@@ -228,6 +241,9 @@
     if (status !== 'playing') return;
     status = kind;
     session = { status: kind, deadline: session.deadline, ...(capturedFlag ? { flag: capturedFlag } : {}) };
+    if (capturedFlag) {
+      try { localStorage.setItem(CAPTURE_KEY, capturedFlag); } catch (err) { /* session storage still retains it */ }
+    }
     writeSession(session);
     input.disabled = true;
     if (kind === 'won') {
@@ -289,23 +305,41 @@
 
   copyBtn.addEventListener('click', async () => {
     if (!session.flag) return;
+    let copied = false;
     try {
-      await navigator.clipboard.writeText(session.flag);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(session.flag);
+        copied = true;
+      }
+    } catch (err) { /* use the compatibility fallback below */ }
+    if (!copied) {
+      const temp = document.createElement('textarea');
+      temp.value = session.flag;
+      temp.setAttribute('readonly', '');
+      temp.style.position = 'fixed';
+      temp.style.opacity = '0';
+      document.body.appendChild(temp);
+      temp.select();
+      try { copied = document.execCommand('copy'); } catch (err) { copied = false; }
+      temp.remove();
+    }
+    if (copied) {
       copyBtn.textContent = 'Copied!';
       copyBtn.classList.add('is-copied');
-    } catch (err) {
+    } else {
       flagCode.hidden = false;
       const selection = window.getSelection();
       const range = document.createRange();
       range.selectNodeContents(flagCode);
       selection.removeAllRanges();
       selection.addRange(range);
-      copyBtn.textContent = 'Select and copy';
+      copyBtn.textContent = 'Flag selected — press Cmd+C';
     }
   });
 
   /* ---------- Try again (after a loss) ---------- */
   retryBtn.addEventListener('click', () => {
+    try { localStorage.removeItem(CAPTURE_KEY); } catch (err) { /* storage may be blocked */ }
     session = newSession();
     status = 'playing';
     state.cwd = HOME;
