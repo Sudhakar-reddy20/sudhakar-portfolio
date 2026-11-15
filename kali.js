@@ -231,7 +231,7 @@
   const showResult = (kind) => {
     const won = kind === 'won';
     resultKicker.textContent = won ? 'Winner' : 'Loser';
-    resultTitle.textContent = won ? 'Oh not! You have caught me' : "Time's up";
+    resultTitle.textContent = won ? 'OOPS! YOU CAUGHT ME.' : "Time's up";
     resultText.textContent = won
       ? 'You captured the flag. Copy it below, then return to the portfolio and submit it to reveal the phone number.'
       : 'You did not capture the flag within 5 minutes.';
