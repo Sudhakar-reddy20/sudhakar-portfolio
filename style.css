@@ -1,13 +1,14 @@
+/* Gotham theme: night-black city, bat-signal yellow, heavy geometric type */
 :root {
-  --ink: #0a0b0f;
-  --surface: #14161e;
-  --paper: #eeeadf;
-  --body: #c9c5ba;
-  --slate: #8b909c;
-  --amber: #ffb23f;
-  --rule: #2a2e3a;
-  --serif: 'Instrument Serif', 'Times New Roman', Georgia, serif;
-  --sans: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ink: #07080b;
+  --surface: #0f1116;
+  --paper: #ecedf0;
+  --body: #b8bcc6;
+  --slate: #7b8290;
+  --amber: #ffd23f;
+  --rule: #22262e;
+  --serif: 'Montserrat', Arial, sans-serif;
+  --sans: 'Montserrat', Arial, sans-serif;
 }
 
 *,
@@ -38,12 +39,26 @@ html.lenis body {
 
 body {
   font-family: var(--sans);
-  font-size: 1.0625rem;
+  font-size: 1rem;
+  font-weight: 400;
   line-height: 1.65;
   color: var(--paper);
   background: var(--ink);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Bat-signal glow from the top right, fixed behind the page */
+body::before {
+  content: '';
+  position: fixed;
+  top: -35vh;
+  right: -25vw;
+  width: 95vw;
+  height: 95vh;
+  background: radial-gradient(closest-side, rgba(255, 210, 63, 0.11), transparent);
+  pointer-events: none;
+  z-index: -2;
 }
 
 a {
@@ -96,7 +111,7 @@ img {
   pointer-events: none;
   background: radial-gradient(
     520px circle at var(--mx, 50%) var(--my, 30%),
-    rgba(255, 178, 63, 0.07),
+    rgba(255, 210, 63, 0.06),
     transparent 70%
   );
 }
@@ -129,7 +144,7 @@ html.has-cursor * {
   width: 40px;
   height: 40px;
   margin: -20px 0 0 -20px;
-  border: 1px solid rgba(255, 178, 63, 0.7);
+  border: 1px solid rgba(255, 210, 63, 0.7);
   transition: width 0.35s ease, height 0.35s ease, margin 0.35s ease, background-color 0.35s ease;
 }
 
@@ -137,7 +152,7 @@ html.has-cursor * {
   width: 64px;
   height: 64px;
   margin: -32px 0 0 -32px;
-  background-color: rgba(255, 178, 63, 0.08);
+  background-color: rgba(255, 210, 63, 0.08);
 }
 
 .scroll-progress {
@@ -145,7 +160,7 @@ html.has-cursor * {
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: 3px;
   background: var(--amber);
   transform-origin: 0 50%;
   transform: scaleX(0);
@@ -158,21 +173,21 @@ html.has-cursor * {
   left: 22px;
   z-index: 110;
   padding: 8px 12px;
-  font-family: var(--serif);
-  font-size: 1.35rem;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 900;
   line-height: 1;
-  color: var(--paper);
-  background: rgba(10, 11, 15, 0.6);
-  border: 1px solid var(--rule);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  background: var(--amber);
   text-decoration: none;
 }
 
 .brand-full {
-  font-family: var(--sans);
-  font-size: 0.8rem;
-  color: var(--slate);
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
 }
 
 /* ---------- Glass navigation (bottom centre) ---------- */
@@ -192,16 +207,16 @@ html.has-cursor * {
   pointer-events: auto;
   display: flex;
   gap: 2px;
-  padding: 6px;
+  padding: 5px;
   max-width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
-  background: rgba(20, 22, 30, 0.55);
-  border: 1px solid rgba(238, 234, 223, 0.12);
-  border-radius: 999px;
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  background: rgba(15, 17, 22, 0.6);
+  border: 1px solid rgba(236, 237, 240, 0.1);
+  border-radius: 4px;
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
 .glass-nav::-webkit-scrollbar {
@@ -209,18 +224,20 @@ html.has-cursor * {
 }
 
 .glass-nav a {
-  padding: 8px 14px;
-  font-size: 0.875rem;
+  padding: 8px 13px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--slate);
   white-space: nowrap;
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: 2px;
   transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .glass-nav a:hover {
   color: var(--paper);
-  background: rgba(238, 234, 223, 0.06);
+  background: rgba(236, 237, 240, 0.06);
 }
 
 .glass-nav a.active {
@@ -232,10 +249,12 @@ html.has-cursor * {
 .btn {
   display: inline-flex;
   align-items: center;
-  padding: 13px 22px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 4px;
+  padding: 14px 24px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 2px;
   border: 1px solid transparent;
   text-decoration: none;
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, translate 0.3s ease;
@@ -261,8 +280,8 @@ html.has-cursor * {
 }
 
 .btn-ghost:hover {
-  border-color: var(--paper);
-  color: var(--paper);
+  border-color: var(--amber);
+  color: var(--amber);
 }
 
 /* ---------- Hero ---------- */
@@ -274,6 +293,19 @@ html.has-cursor * {
   overflow: hidden;
 }
 
+/* City skyline along the bottom of the hero */
+.skyline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(90px, 18vh, 170px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
 .hero-grid {
   position: relative;
   z-index: 1;
@@ -281,15 +313,18 @@ html.has-cursor * {
   grid-template-columns: 1.25fr 0.85fr;
   gap: clamp(40px, 6vw, 88px);
   align-items: center;
-  padding: 120px 0 110px;
+  padding: 120px 0 170px;
 }
 
 .status {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 28px;
-  font-size: 0.9rem;
+  margin-bottom: 26px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--amber);
 }
 
@@ -303,21 +338,22 @@ html.has-cursor * {
 
 @keyframes ping {
   0% {
-    box-shadow: 0 0 0 0 rgba(255, 178, 63, 0.55);
+    box-shadow: 0 0 0 0 rgba(255, 210, 63, 0.55);
   }
   75%,
   100% {
-    box-shadow: 0 0 0 10px rgba(255, 178, 63, 0);
+    box-shadow: 0 0 0 10px rgba(255, 210, 63, 0);
   }
 }
 
 .name {
-  margin-bottom: 26px;
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(3.6rem, 10.5vw, 9.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
 
 .name .line {
@@ -326,13 +362,14 @@ html.has-cursor * {
 
 .role {
   margin-bottom: 22px;
-  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
-  font-weight: 500;
+  font-size: clamp(1rem, 1.9vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .caret {
   display: inline-block;
-  width: 2px;
+  width: 3px;
   height: 1em;
   margin-left: 6px;
   vertical-align: -0.15em;
@@ -348,8 +385,8 @@ html.has-cursor * {
 
 .hero-line {
   max-width: 34em;
-  margin-bottom: 36px;
-  font-size: 1.125rem;
+  margin-bottom: 34px;
+  font-size: 1.05rem;
   color: var(--slate);
 }
 
@@ -364,11 +401,11 @@ html.has-cursor * {
   flex-wrap: wrap;
   gap: 16px 40px;
   max-width: 36em;
-  margin-top: 44px;
+  margin-top: 40px;
   padding-top: 22px;
   border-top: 1px solid var(--rule);
   list-style: none;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--slate);
 }
 
@@ -378,9 +415,9 @@ html.has-cursor * {
 }
 
 .facts strong {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 2.2rem;
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 2rem;
   line-height: 1;
   color: var(--paper);
   margin-bottom: 6px;
@@ -427,12 +464,15 @@ html.has-cursor * {
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(20, 22, 30, 0.92);
-  border: 1px solid rgba(255, 178, 63, 0.5);
-  font-family: var(--serif);
-  font-size: calc(var(--s) * 0.15);
+  background: rgba(15, 17, 22, 0.95);
+  border: 1px solid rgba(255, 210, 63, 0.6);
+  font-family: var(--sans);
+  font-size: calc(var(--s) * 0.105);
+  font-weight: 900;
   line-height: 1;
-  color: var(--paper);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--amber);
   text-align: center;
 }
 
@@ -465,9 +505,9 @@ html.has-cursor * {
   z-index: 2;
   padding: 14px 14px 20px;
   background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 210, 63, 0.3);
+  border-radius: 2px;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
   overflow: hidden;
 }
 
@@ -478,14 +518,16 @@ html.has-cursor * {
   pointer-events: none;
   background: radial-gradient(
     380px circle at var(--gx, 50%) var(--gy, 30%),
-    rgba(255, 255, 255, 0.09),
+    rgba(255, 255, 255, 0.08),
     transparent 45%
   );
 }
 
 .id-top {
   margin-bottom: 12px;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   color: var(--slate);
 }
 
@@ -493,8 +535,8 @@ html.has-cursor * {
   position: relative;
   overflow: hidden;
   aspect-ratio: 3 / 4;
-  border-radius: 3px;
-  background: #0d0f14;
+  border-radius: 1px;
+  background: #0b0c10;
 }
 
 .photo img {
@@ -511,7 +553,7 @@ html.has-cursor * {
   top: 0;
   height: 2px;
   background: var(--amber);
-  box-shadow: 0 0 16px rgba(255, 178, 63, 0.7);
+  box-shadow: 0 0 16px rgba(255, 210, 63, 0.7);
   animation: scan 4.5s linear infinite;
 }
 
@@ -537,20 +579,22 @@ html.has-cursor * {
 }
 
 .id-name {
-  font-family: var(--serif);
-  font-size: 1.7rem;
-  line-height: 1.1;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 
 .id-role {
-  margin-top: 4px;
-  font-size: 0.95rem;
+  margin-top: 6px;
+  font-size: 0.85rem;
   color: var(--slate);
 }
 
 .id-meta {
   margin-top: 12px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--body);
 }
 
@@ -567,11 +611,12 @@ html.has-cursor * {
 }
 
 .section-title {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(2.8rem, 6vw, 5rem);
-  line-height: 0.95;
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  line-height: 0.98;
   letter-spacing: -0.02em;
+  text-transform: uppercase;
   transform-origin: 50% 100%;
 }
 
@@ -585,10 +630,10 @@ html.has-cursor * {
 }
 
 .lead {
-  margin-bottom: 48px;
-  font-family: var(--serif);
-  font-size: clamp(1.6rem, 2.8vw, 2.25rem);
-  line-height: 1.25;
+  margin-bottom: 44px;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.4;
   color: var(--paper);
 }
 
@@ -609,8 +654,9 @@ html.has-cursor * {
 }
 
 .row dt {
-  font-size: 0.95rem;
-  color: var(--slate);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--amber);
 }
 
 .row dd {
@@ -637,20 +683,22 @@ html.has-cursor * {
 
 .job-date {
   margin-bottom: 8px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--amber);
 }
 
 .job h3 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(1.7rem, 3vw, 2.1rem);
-  line-height: 1.15;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .job-meta {
   margin-top: 6px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--slate);
 }
 
@@ -673,7 +721,7 @@ html.has-cursor * {
   left: 0;
   top: 0.8em;
   width: 10px;
-  height: 1px;
+  height: 2px;
   background: var(--amber);
 }
 
@@ -688,10 +736,11 @@ html.has-cursor * {
 }
 
 .project h3 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 900;
   line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
   margin-bottom: 12px;
 }
 
@@ -701,7 +750,9 @@ html.has-cursor * {
 
 .stack {
   margin: 14px 0 18px;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   color: var(--slate);
 }
 
@@ -723,21 +774,22 @@ html.has-cursor * {
 }
 
 .stat-value {
-  font-family: var(--serif);
-  font-size: clamp(2.6rem, 4.6vw, 3.6rem);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 900;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .stat-label {
   margin-top: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--slate);
 }
 
 .lab-note {
   max-width: 36em;
   margin: 36px 0 24px;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--body);
 }
 
@@ -750,8 +802,8 @@ html.has-cursor * {
 .ledger thead th {
   padding: 0 16px 12px 0;
   text-align: left;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: var(--slate);
   border-bottom: 1px solid var(--rule);
 }
@@ -764,7 +816,7 @@ html.has-cursor * {
   padding: 18px 16px 18px 0;
   vertical-align: top;
   color: var(--body);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .ledger td:last-child a {
@@ -772,9 +824,11 @@ html.has-cursor * {
 }
 
 .ledger .cert-name {
-  font-family: var(--serif);
-  font-size: 1.3rem;
-  line-height: 1.2;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--paper);
 }
 
@@ -782,13 +836,13 @@ html.has-cursor * {
 .contact-email {
   display: inline-block;
   margin-bottom: 40px;
-  font-family: var(--serif);
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
-  line-height: 1.1;
+  font-size: clamp(1.3rem, 2.8vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
   color: var(--paper);
   text-decoration: none;
   word-break: break-word;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 2px solid var(--amber);
   padding-bottom: 6px;
 }
 
@@ -807,7 +861,7 @@ html.has-cursor * {
   border-top: 1px solid var(--rule);
   overflow: hidden;
   color: var(--slate);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .footer-note {
@@ -815,11 +869,13 @@ html.has-cursor * {
 }
 
 .mega {
-  font-family: var(--serif);
-  font-size: clamp(5rem, 19vw, 19rem);
-  line-height: 0.8;
-  letter-spacing: -0.035em;
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: clamp(3rem, 12vw, 11rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
   text-align: center;
+  text-transform: uppercase;
   white-space: nowrap;
   color: var(--rule);
   user-select: none;
@@ -832,6 +888,7 @@ html.has-cursor * {
     grid-template-columns: 1fr;
     gap: 72px;
     padding-top: 110px;
+    padding-bottom: 150px;
   }
 
   .hero-visual {
@@ -861,8 +918,8 @@ html.has-cursor * {
   }
 
   .glass-nav a {
-    padding: 7px 10px;
-    font-size: 0.8rem;
+    padding: 7px 9px;
+    font-size: 0.72rem;
   }
 
   .brand-full {

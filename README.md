@@ -1,4 +1,4 @@
-# Onteddu Sudhakar Reddy: Portfolio (v6)
+# Onteddu Sudhakar Reddy: Portfolio (v7, Gotham theme)
 
 A static, single-page portfolio for GitHub Pages. No build step. Plain HTML, CSS and JavaScript, with GSAP and Lenis loaded from CDNs for the 3D scroll motion.
 
@@ -44,5 +44,5 @@ A static, single-page portfolio for GitHub Pages. No build step. Plain HTML, CSS
 
 ## Notes
 
-- Fonts (Instrument Serif, Hanken Grotesk) and CDN scripts (GSAP, ScrollTrigger, Lenis) need an internet connection. The preloader does not need the CDN scripts.
+- Font (Montserrat, a Gotham-style free alternative) and CDN scripts (GSAP, ScrollTrigger, Lenis) need an internet connection. The preloader does not need the CDN scripts.
 - The custom cursor and tilt only run on mouse devices.
