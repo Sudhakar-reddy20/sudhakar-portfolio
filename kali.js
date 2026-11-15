@@ -39,15 +39,7 @@
   const flagCode = document.getElementById('flag-code');
   const copyBtn = document.getElementById('kali-copy');
 
-  /* ---------- Session (per tab, so reloading does not give a new 5 minutes) ---------- */
-  const readSession = () => {
-    try {
-      return JSON.parse(sessionStorage.getItem(KEY)) || null;
-    } catch (err) {
-      return null;
-    }
-  };
-
+  /* ---------- Fresh challenge on every page load ---------- */
   const writeSession = (data) => {
     try {
       sessionStorage.setItem(KEY, JSON.stringify(data));
@@ -62,24 +54,10 @@
     return data;
   };
 
-  let session = readSession();
-  let savedFlag = '';
-  try { savedFlag = localStorage.getItem(CAPTURE_KEY) || ''; } catch (err) { /* storage may be blocked */ }
-  if (!session || typeof session.deadline !== 'number') session = newSession();
-  if (savedFlag) {
-    session = { status: 'won', deadline: session.deadline, flag: savedFlag };
-    writeSession(session);
-  } else if (session.status === 'won' && !session.flag) {
-    try { session.flag = new TextDecoder().decode(Uint8Array.from(atob(ENCODED_LOOT), c => c.charCodeAt(0))); } catch (err) { /* keep legacy session usable */ }
-    if (session.flag) {
-      try { localStorage.setItem(CAPTURE_KEY, session.flag); } catch (err) { /* storage may be blocked */ }
-      writeSession(session);
-    }
-  }
-  if (session.status === 'playing' && Date.now() >= session.deadline) {
-    session = { status: 'lost', deadline: session.deadline };
-    writeSession(session);
-  }
+  // Clear any previous win/loss so every reload starts a brand-new challenge.
+  try { sessionStorage.removeItem(KEY); } catch (err) { /* storage may be blocked */ }
+  try { localStorage.removeItem(CAPTURE_KEY); } catch (err) { /* storage may be blocked */ }
+  let session = newSession();
   let status = session.status;
 
   const state = { cwd: HOME, history: [], hIdx: 0 };
@@ -241,9 +219,6 @@
     if (status !== 'playing') return;
     status = kind;
     session = { status: kind, deadline: session.deadline, ...(capturedFlag ? { flag: capturedFlag } : {}) };
-    if (capturedFlag) {
-      try { localStorage.setItem(CAPTURE_KEY, capturedFlag); } catch (err) { /* session storage still retains it */ }
-    }
     writeSession(session);
     input.disabled = true;
     if (kind === 'won') {
@@ -340,7 +315,6 @@
 
   /* ---------- Try again (after a loss) ---------- */
   retryBtn.addEventListener('click', () => {
-    try { localStorage.removeItem(CAPTURE_KEY); } catch (err) { /* storage may be blocked */ }
     session = newSession();
     status = 'playing';
     state.cwd = HOME;
