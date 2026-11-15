@@ -35,6 +35,8 @@
   const resultTitle = document.getElementById('result-title');
   const resultText = document.getElementById('result-text');
   const retryBtn = document.getElementById('kali-retry');
+  const flagCode = document.getElementById('flag-code');
+  const copyBtn = document.getElementById('kali-copy');
 
   /* ---------- Session (per tab, so reloading does not give a new 5 minutes) ---------- */
   const readSession = () => {
@@ -213,16 +215,19 @@
     resultKicker.textContent = won ? 'Winner' : 'Loser';
     resultTitle.textContent = won ? 'Oh not! You have caught me' : "Time's up";
     resultText.textContent = won
-      ? 'You captured the flag. Return to the portfolio and submit it to reveal the phone number.'
+      ? 'You captured the flag. Copy it below, then return to the portfolio and submit it to reveal the phone number.'
       : 'You did not capture the flag within 5 minutes.';
+    flagCode.textContent = won && session.flag ? session.flag : '';
+    flagCode.hidden = !won || !session.flag;
+    copyBtn.hidden = !won || !session.flag;
     retryBtn.hidden = won;
     resultEl.hidden = false;
   };
 
-  const finish = (kind) => {
+  const finish = (kind, capturedFlag) => {
     if (status !== 'playing') return;
     status = kind;
-    session = { status: kind, deadline: session.deadline };
+    session = { status: kind, deadline: session.deadline, ...(capturedFlag ? { flag: capturedFlag } : {}) };
     writeSession(session);
     input.disabled = true;
     if (kind === 'won') {
@@ -241,7 +246,7 @@
     const matches = lines.join('\n').match(FLAG_RE) || [];
     matches.forEach(async (candidate) => {
       if (status !== 'playing' || !window.Challenge) return;
-      if (await window.Challenge.verify(candidate)) finish('won');
+      if (await window.Challenge.verify(candidate)) finish('won', candidate);
     });
   };
 
@@ -281,6 +286,23 @@
   };
 
   input.addEventListener('keydown', onKey);
+
+  copyBtn.addEventListener('click', async () => {
+    if (!session.flag) return;
+    try {
+      await navigator.clipboard.writeText(session.flag);
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('is-copied');
+    } catch (err) {
+      flagCode.hidden = false;
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(flagCode);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      copyBtn.textContent = 'Select and copy';
+    }
+  });
 
   /* ---------- Try again (after a loss) ---------- */
   retryBtn.addEventListener('click', () => {
