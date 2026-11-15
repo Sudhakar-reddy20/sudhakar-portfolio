@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="preloader.css" />
+  <link rel="stylesheet" href="secret-terminal.css" />
 
   <!-- Runs before the page paints: shows the intro only when motion is allowed.
        Safety net: if the intro script never finishes, the page opens after 12 seconds. -->
@@ -84,6 +85,7 @@
   <main>
     <!-- HERO -->
     <section id="home" class="hero" aria-labelledby="hero-title">
+      <!-- recon: plain ls skips dotfiles, ls -la shows everything -->
       <svg class="skyline" viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
         <defs>
           <pattern id="sky-win" width="14" height="18" patternUnits="userSpaceOnUse">
@@ -253,6 +255,7 @@
 
     <!-- LAB WORK -->
     <section id="lab-work" class="section">
+      <!-- scan first: nmap lists the open ports, then talk to one: nc localhost PORT -->
       <div class="container split">
         <h2 class="section-title">Lab work</h2>
         <div class="split-body">
@@ -351,6 +354,7 @@
 
     <!-- SKILLS -->
     <section id="skills" class="section">
+      <!-- decode: base64 -d FILE turns the encoded text back into the original -->
       <div class="container split">
         <h2 class="section-title">Skills</h2>
         <div class="split-body">
@@ -424,5 +428,6 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <script src="preloader.js"></script>
   <script src="script.js"></script>
+  <script src="secret-terminal.js"></script>
 </body>
 </html>
