@@ -1,20 +1,23 @@
-# Onteddu Sudhakar Reddy: Portfolio (v8, hacker blue)
+# Onteddu Sudhakar Reddy: Portfolio (v10)
 
-A static, single-page portfolio for GitHub Pages. No build step. Plain HTML, CSS and JavaScript, with GSAP and Lenis loaded from CDNs for the 3D scroll motion.
+A static, single-page portfolio for GitHub Pages, with a "Test your knowledge" Kali challenge. No build step. Plain HTML, CSS and JavaScript, with GSAP and Lenis loaded from CDNs for the 3D scroll motion.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| index.html | Page structure, the preloader markup, the side rail and all content |
-| style.css | Hacker blue theme, layout, side rail, back-to-top, copy buttons, print styles |
-| script.js | Hero intro, side-rail highlight, back-to-top, copy buttons, Guntur time, scroll-linked 3D, tilt, cursor, smooth scroll |
-| preloader.css | Preloader styles: cracked display, repair tiles, 3D exit |
-| preloader.js | Preloader sequence: cracks, terminal log, tile repair, exit |
+| index.html | The portfolio, the hidden phone form and the Test your knowledge button |
+| style.css | Hacker blue theme, layout, side rail, back-to-top, print styles |
+| script.js | Hero intro, side rail, back-to-top, copy buttons, Guntur time, scroll 3D |
+| challenge.js | Checks the flag and reveals the phone number (also used by the Kali page) |
+| challenge.css | Styles for the flag form and the challenge section |
+| kali.html | The Kali machine page: terminal, 5 minute timer, win and lose panels |
+| kali.js | Kali machine: virtual files, hints folder, commands, timer, win check |
+| kali.css | Styles for the Kali machine page |
+| preloader.css, preloader.js | Intro animation (cracked display) |
 | photo.jpg | Profile photo in the ID card |
-| resume.pdf | Linked from the hero and the Contact section |
-| nptel-hci.pdf | NPTEL certificate, Human-Computer Interfaces (IIT Guwahati) |
-| nptel-sna.pdf | NPTEL certificate, Social Network Analysis (IIT Madras) |
+| resume.pdf | Linked from the hero and Contact |
+| nptel-hci.pdf, nptel-sna.pdf | NPTEL certificates |
 | README.md | This file |
 
 ## Put it live on GitHub Pages
@@ -24,34 +27,25 @@ A static, single-page portfolio for GitHub Pages. No build step. Plain HTML, CSS
 3. Settings, then Pages. Deploy from a branch: `main`, folder `/ (root)`. Save.
 4. The site is at https://sudhakar-reddy20.github.io/sudhakar-portfolio/
 
-## Features for visitors
+The flag check uses the browser's crypto functions, which need https. GitHub Pages is https, so it works on the live site.
 
-- Side rail on the left edge (on phones, the right edge). It shows the sections, highlights the one you are reading, and opens labels on hover.
-- Back-to-top button in the bottom-right corner, shown after scrolling down.
-- Download resume button in the hero and in Contact.
-- Copy buttons for the email address and phone number.
-- Live local time for Guntur (IST) in the hero.
-- Print or save as PDF: the page prints as a light, clean CV.
+## How the challenge works
 
-## The preloader
+- Button: "Test your knowledge" at the bottom of the portfolio opens kali.html.
+- Kali machine: 5 minutes from when the page opens (a reload keeps the same timer). The hints are in the `hints` folder inside the machine (`ls hints`, then `cat hints/01-start.txt`).
+- Winner: the visitor captures the flag. A panel says "Oh not! You have caught me" and offers Copy flag.
+- Loser: time runs out. The panel says "Time's up" and offers Try again.
+- Contact: the phone number is hidden. Pasting the exact flag into the form reveals it.
 
-- Plays on every visit, about 6 seconds. Visitors can press Skip intro or Escape.
-- Turned off for visitors who prefer reduced motion.
-- Edit the log text in `preloader.js` (the `typeLine` calls in `run`).
-- Edit the repaired word (currently "SR") in `index.html`, inside `.pl-restored`.
-- Edit timing in `preloader.js` (the `wait` values in `run`).
+## Change the flag
 
-## Edit the site later
-
-- Text and sections: edit index.html. Section ids: about, experience, projects, lab-work, certificates, skills, contact. The side rail links are the `a[data-nav]` elements inside `nav.side-nav`.
-- Typing title: the `phrases` list in script.js.
-- Status badge: the `status` paragraph at the top of the hero in index.html.
-- Local time city label: the `Guntur,` text in `script.js` (the `localTime` block).
-- Colours: the `:root` variables at the top of style.css. The accent is `--accent`.
-- Photo or resume: replace photo.jpg or resume.pdf with a file of the same name.
+1. In `kali.js`, change `FLAG` (the format is `FLAG{...}`).
+2. In `challenge.js`, replace `FLAG_HASH` with the SHA-256 of the lowercase flag. On a computer with a terminal:
+   `printf 'flag{your_text}' | sha256sum`
+3. In `challenge.js`, replace `PHONE_B64` with your number encoded in base64:
+   `printf '+91 XXXXXXXXXX' | base64`
 
 ## Notes
 
-- Font (Montserrat) and CDN scripts (GSAP, ScrollTrigger, Lenis) need an internet connection. The preloader does not need the CDN scripts.
-- The custom cursor and tilt only run on mouse devices.
-- Copy buttons use the browser clipboard. On very old browsers they fall back to a hidden text field.
+- This is a static site, so the checks run in the visitor's browser. A visitor who reads the page source can find the flag. It is a fun challenge, not a secure lock.
+- Fonts (Montserrat) and CDN scripts need an internet connection.
