@@ -277,3 +277,180 @@
     display: none;
   }
 }
+
+/* ---------- Colour dots and calm toggle share one bar ---------- */
+.theme-switch {
+  align-items: center;
+}
+
+.calm-toggle {
+  padding: 4px 10px;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--body);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.calm-toggle:hover {
+  color: var(--paper);
+}
+
+.calm-toggle[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------- Future-role ID card ---------- */
+.id-card {
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.id-card.is-switching {
+  animation: card-switch 0.5s steps(3, end) 1;
+}
+
+@keyframes card-switch {
+  0% {
+    filter: brightness(1.6) saturate(1.4);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+/* Each role tints the photo with its own colour */
+.id-card .photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--accent);
+  mix-blend-mode: color;
+  opacity: 0.35;
+  transition: background-color 0.5s ease;
+}
+
+/* A rubber-stamp label over the photo shows the career track */
+.id-stamp {
+  position: absolute;
+  top: 56px;
+  right: 22px;
+  z-index: 3;
+  padding: 4px 10px;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  background: rgba(5, 7, 12, 0.65);
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  transform: rotate(-6deg);
+  text-shadow: 0 0 10px var(--accent-glow);
+  pointer-events: none;
+}
+
+.id-mission {
+  min-height: 3em;
+  margin-top: 8px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--body);
+}
+
+.role-switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.role-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--body);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.role-dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+
+.role-dot:hover {
+  color: var(--paper);
+  border-color: var(--swatch);
+}
+
+.role-dot[aria-pressed="true"] {
+  color: var(--paper);
+  border-color: var(--swatch);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.card-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.card-share {
+  padding: 6px 4px;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.card-share:hover {
+  color: var(--paper);
+}
+
+/* ---------- Calm mode: no motion, cursor or glitch (set from the colour bar) ---------- */
+html.calm:not(.is-preloading) *,
+html.calm:not(.is-preloading) *::before,
+html.calm:not(.is-preloading) *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+html.calm:not(.is-preloading) .cursor-dot,
+html.calm:not(.is-preloading) .cursor-ring,
+html.calm:not(.is-preloading) .scan-sweep,
+html.calm:not(.is-preloading) .spotlight,
+html.calm:not(.is-preloading) .id-card .scan {
+  display: none;
+}
+
+/* ---------- Print: hide the on-screen controls ---------- */
+@media print {
+  .theme-switch,
+  .role-switch,
+  .card-actions,
+  .summary-btn,
+  .pal {
+    display: none !important;
+  }
+}

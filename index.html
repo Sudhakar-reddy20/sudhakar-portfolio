@@ -67,10 +67,11 @@
   <div class="cursor-ring" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
   <div class="scan-sweep" aria-hidden="true"></div>
-  <div class="theme-switch" role="group" aria-label="Accent colour">
+  <div class="theme-switch" role="group" aria-label="Display options">
     <button type="button" class="theme-dot" data-accent="blue" style="--swatch:#3aa0ff" aria-label="Blue accent" aria-pressed="true"></button>
     <button type="button" class="theme-dot" data-accent="green" style="--swatch:#3ee08f" aria-label="Green accent" aria-pressed="false"></button>
     <button type="button" class="theme-dot" data-accent="amber" style="--swatch:#ffb23f" aria-label="Amber accent" aria-pressed="false"></button>
+    <button type="button" class="calm-toggle" id="calm-toggle" aria-pressed="false">Calm</button>
   </div>
 
   <!-- Side navigation: a slim rail that opens on hover (right edge on phones) -->
@@ -83,7 +84,6 @@
     <a href="#certificates" data-nav="certificates"><span class="dot" aria-hidden="true"></span><span class="label">Certificates</span></a>
     <a href="#skills" data-nav="skills"><span class="dot" aria-hidden="true"></span><span class="label">Skills</span></a>
     <a href="#contact" data-nav="contact"><span class="dot" aria-hidden="true"></span><span class="label">Contact</span></a>
-    <a href="#challenge" data-nav="challenge"><span class="dot" aria-hidden="true"></span><span class="label">Challenge</span></a>
   </nav>
 
   <a class="to-top" href="#home" aria-label="Back to top">
@@ -160,18 +160,24 @@
         </div>
 
         <div class="hero-visual">
-          <article class="id-card tilt">
-            <div class="id-top">Cybersecurity and SOC</div>
+          <article class="id-card tilt" id="id-card" data-role="soc">
+            <div class="id-top">Future role</div>
             <div class="photo">
               <img src="photo.jpg" alt="Portrait of Onteddu Sudhakar Reddy" width="720" height="960" fetchpriority="high" decoding="async" />
               <span class="scan" aria-hidden="true"></span>
             </div>
+            <span class="id-stamp" id="id-stamp">Blue team</span>
             <div class="id-body">
               <p class="id-name">Onteddu Sudhakar Reddy</p>
-              <p class="id-role">SOC analyst and cybersecurity enthusiast</p>
+              <p class="id-role" id="id-role">SOC Analyst</p>
+              <p class="id-mission" id="id-mission">Watches alerts, triages logs and escalates real incidents.</p>
               <p class="id-meta">Guntur, Andhra Pradesh, India<br />B.Tech CSE, expected 2027</p>
             </div>
           </article>
+          <div class="role-switch" id="role-switch" role="group" aria-label="Future roles"></div>
+          <div class="card-actions">
+            <button type="button" class="card-share" id="card-share">Copy link to this role</button>
+          </div>
         </div>
       </div>
     </section>
@@ -447,6 +453,7 @@
           </dl>
           <div class="contact-actions">
             <a class="btn btn-primary" href="resume.pdf" download>Download resume</a>
+            <button class="btn btn-ghost summary-btn" type="button">Copy my summary</button>
             <!-- Paste your Calendly or Cal.com link in href, then delete the hidden attribute -->
             <a class="btn btn-ghost booking-btn" href="https://cal.com/YOUR-USERNAME" target="_blank" rel="noopener noreferrer" hidden>Book an interview</a>
           </div>
@@ -459,7 +466,7 @@
         <h2 class="section-title">Challenge</h2>
         <div class="split-body">
           <p class="lead">Can you find my flag? Open a Kali machine and capture it within 5 minutes. The flag reveals my phone number.</p>
-          <a class="btn btn-primary challenge-btn" href="kali.html">Open Kali Machine&nbsp; ↗</a>
+          <a class="btn btn-primary challenge-btn" href="kali.html">Test your knowledge</a>
         </div>
       </div>
     </section>
@@ -479,5 +486,7 @@
   <script src="script.js"></script>
   <script src="challenge.js"></script>
   <script src="features.js"></script>
+  <script src="idcard.js"></script>
+  <script src="visitor.js"></script>
 </body>
 </html>

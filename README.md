@@ -1,4 +1,4 @@
-# Onteddu Sudhakar Reddy: Portfolio (v10)
+# Onteddu Sudhakar Reddy: Portfolio (v13)
 
 A static, single-page portfolio for GitHub Pages, with a "Test your knowledge" Kali challenge. No build step. Plain HTML, CSS and JavaScript, with GSAP and Lenis loaded from CDNs for the 3D scroll motion.
 
@@ -12,7 +12,9 @@ A static, single-page portfolio for GitHub Pages, with a "Test your knowledge" K
 | challenge.js | Checks the flag and reveals the phone number (also used by the Kali page) |
 | challenge.css | Styles for the flag form and the challenge section |
 | features.js | Colour dots, command palette (/ or Ctrl+K), availability countdown, scan-line sweep |
-| features.css | Styles for the colour dots, glitch effect, palette, badge wall and packet-flow diagram |
+| features.css | Styles for the colour dots, glitch effect, palette, badge wall, packet-flow diagram, future-role ID card and calm mode |
+| idcard.js | The ID card: rotates through future roles, role buttons, `?role=` links |
+| visitor.js | Calm mode (remembered per visitor) and the "Copy my summary" button |
 | kali.html | The Kali machine page: terminal, 5 minute timer, win and lose panels |
 | kali.js | Kali machine: virtual files, hints folder, commands, timer, win check |
 | kali.css | Styles for the Kali machine page |
@@ -46,6 +48,12 @@ The flag check uses the browser's crypto functions, which need https. GitHub Pag
    `printf 'flag{your_text}' | sha256sum`
 3. In `challenge.js`, replace `PHONE_B64` with your number encoded in base64:
    `printf '+91 XXXXXXXXXX' | base64`
+
+## Change the future roles
+
+1. In `idcard.js`, edit the `ROLES` list: the title, the track (Blue team, Red team or Build), the mission sentence and the colour (`rgb`, as "red, green, blue").
+2. The card rotates every 6 seconds. It pauses while the mouse is over it, and it stops when a visitor picks a role.
+3. "Copy link to this role" gives a link such as `...index.html?role=pentest`, which opens on that role.
 
 ## Notes
 
