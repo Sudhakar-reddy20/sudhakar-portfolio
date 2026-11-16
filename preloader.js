@@ -1,11 +1,8 @@
 (() => {
   'use strict';
-
   const root = document.documentElement;
   const el = document.getElementById('preloader');
   if (!el) return;
-
-  /* If motion is off, the intro is skipped and the page opens at once */
   if (!root.classList.contains('is-preloading')) {
     el.remove();
     window.dispatchEvent(new Event('site:ready'));
@@ -13,247 +10,107 @@
   }
 
   const tilesWrap = el.querySelector('.pl-tiles');
-  const deadWrap = el.querySelector('.pl-dead');
   const hexWrap = el.querySelector('.pl-hex');
   const cracksSvg = el.querySelector('.pl-cracks');
   const logEl = el.querySelector('.pl-log');
   const barFill = el.querySelector('.pl-bar span');
   const skipBtn = el.querySelector('.pl-skip');
+  const portrait = el.querySelector('.pl-portrait');
+  const COLS = 12, ROWS = 7, NS = 'http://www.w3.org/2000/svg';
+  let done = false, hexTimer = null, sequenceTimer = null;
+  const sleep = (ms) => new Promise(resolve => {
+    sequenceTimer = setTimeout(resolve, ms);
+  });
 
-  const COLS = 12;
-  const ROWS = 7;
-  const NS = 'http://www.w3.org/2000/svg';
-
-  let done = false;
-  let hexTimer = null;
-  const pending = new Set();
-
-  const rand = (min, max) => min + Math.random() * (max - min);
-
-  /* Pause that ends early once the intro is finished */
-  const wait = (ms) =>
-    new Promise((resolve) => {
-      if (done) {
-        resolve();
-        return;
-      }
-      const entry = { timer: null, resolve };
-      entry.timer = setTimeout(() => {
-        pending.delete(entry);
-        resolve();
-      }, ms);
-      pending.add(entry);
-    });
-
-  /* ---------- Damaged screen: tiles of static ---------- */
+  // Build true image-slice tiles: every tile owns the matching crop of the portrait.
   const tiles = [];
-  for (let i = 0; i < COLS * ROWS; i++) {
-    const tile = document.createElement('i');
-    tile.className = 'pl-tile';
-    const col = i % COLS;
-    const row = Math.floor(i / COLS);
-    const x = COLS === 1 ? 50 : (col / (COLS - 1)) * 100;
-    const y = ROWS === 1 ? 50 : (row / (ROWS - 1)) * 100;
-    tile.style.backgroundPosition = 'center, ' + x.toFixed(2) + '% ' + y.toFixed(2) + '%';
+  for (let i=0;i<COLS*ROWS;i++) {
+    const col=i%COLS, row=Math.floor(i/COLS);
+    const tile=document.createElement('i');
+    tile.className='pl-tile';
+    const x=COLS===1?50:(col/(COLS-1))*100;
+    const y=ROWS===1?50:(row/(ROWS-1))*100;
+    tile.style.backgroundPosition='center, '+x.toFixed(2)+'% '+y.toFixed(2)+'%';
     tilesWrap.appendChild(tile);
     tiles.push(tile);
   }
 
-  /* ---------- Dead pixels ---------- */
-  const dotColours = ['#ff5c5c', '#5cff9d', '#5cc8ff', '#ffffff'];
-  for (let i = 0; i < 70; i++) {
-    const dot = document.createElement('span');
-    dot.style.left = (Math.random() * 100).toFixed(2) + '%';
-    dot.style.top = (Math.random() * 100).toFixed(2) + '%';
-    dot.style.setProperty('--c', dotColours[i % dotColours.length]);
-    dot.style.animationDelay = (-Math.random() * 2.4).toFixed(2) + 's';
-    deadWrap.appendChild(dot);
+  // Draw a controlled glass fracture from a single impact point.
+  const path=(points)=>points.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const addCrack=(d,width,delay)=>{
+    const p=document.createElementNS(NS,'path');
+    p.setAttribute('d',d);p.setAttribute('pathLength','1');p.setAttribute('class','crack');
+    p.setAttribute('stroke-width',width);p.style.setProperty('--d',delay+'s');cracksSvg.appendChild(p);
+  };
+  const cx=500,cy=312;
+  for(let i=0;i<18;i++){
+    const a=(i/18)*Math.PI*2, len=260+(i%4)*65, pts=[[cx,cy]];
+    for(let s=1;s<=6;s++){
+      const r=len*s/6, bend=Math.sin(i*7+s*2)*9;
+      pts.push([cx+Math.cos(a)*r+Math.cos(a+Math.PI/2)*bend,cy+Math.sin(a)*r+Math.sin(a+Math.PI/2)*bend]);
+    }
+    addCrack(path(pts),i%3===0?1.8:1.1,i*.025);
+    if(i%2===0){const q=pts[3];addCrack(path([q,[q[0]+Math.cos(a+.55)*75,q[1]+Math.sin(a+.55)*75],[q[0]+Math.cos(a+.55)*125,q[1]+Math.sin(a+.55)*125]]),.8,.18+i*.02);}
   }
 
-  /* ---------- Cracks: rays, branches and rings from one impact point ---------- */
-  const toPath = (points) =>
-    points.map((p, k) => (k ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const setStatus=(message)=>{logEl.textContent=message;};
+  const hexLine=()=>Array.from({length:28},()=>Math.floor(Math.random()*16).toString(16)).join('');
+  const startHex=()=>{hexTimer=setInterval(()=>{hexWrap.textContent=Array.from({length:10},hexLine).join('\n');},75);};
+  const stopHex=()=>{clearInterval(hexTimer);hexWrap.textContent='0x49 0x44 0x45 0x4e 0x54 0x49 0x54 0x59\nDECODING PORTRAIT BUFFER...';};
 
-  const addCrack = (d, delay, width) => {
-    const path = document.createElementNS(NS, 'path');
-    path.setAttribute('d', d);
-    path.setAttribute('pathLength', '1');
-    path.setAttribute('class', 'crack');
-    path.setAttribute('stroke-width', width.toFixed(2));
-    path.style.setProperty('--d', delay.toFixed(2) + 's');
-    cracksSvg.appendChild(path);
-  };
-
-  const IX = 380;
-  const IY = 260;
-  const RAYS = 16;
-
-  for (let i = 0; i < RAYS; i++) {
-    const base = (i / RAYS) * Math.PI * 2 + rand(-0.12, 0.12);
-    const length = rand(260, 640);
-    const steps = 7;
-    const points = [[IX, IY]];
-    for (let s = 1; s <= steps; s++) {
-      const r = (length * s) / steps;
-      const a = base + rand(-0.09, 0.09);
-      points.push([IX + Math.cos(a) * r, IY + Math.sin(a) * r]);
-    }
-    addCrack(toPath(points), i * 0.04, rand(1.2, 2.2));
-
-    if (Math.random() < 0.6) {
-      const [bx, by] = points[3];
-      const ba = base + (Math.random() < 0.5 ? -0.5 : 0.5) + rand(-0.1, 0.1);
-      const blen = length * rand(0.2, 0.35);
-      const branch = [
-        [bx, by],
-        [bx + Math.cos(ba) * blen * 0.5, by + Math.sin(ba) * blen * 0.5],
-        [bx + Math.cos(ba) * blen, by + Math.sin(ba) * blen],
-      ];
-      addCrack(toPath(branch), 0.3 + i * 0.04, rand(0.8, 1.4));
-    }
-  }
-
-  [70, 140, 230].forEach((radius, idx) => {
-    const start = rand(0, Math.PI * 2);
-    const span = rand(2.2, 3.8);
-    const pts = [];
-    for (let k = 0; k <= 18; k++) {
-      const a = start + (span * k) / 18;
-      const r = radius + rand(-6, 6);
-      pts.push([IX + Math.cos(a) * r, IY + Math.sin(a) * r]);
-    }
-    addCrack(toPath(pts), 0.3 + idx * 0.25, 1);
-  });
-
-  addCrack(`M${IX - 14} ${IY} L${IX + 14} ${IY} M${IX} ${IY - 14} L${IX} ${IY + 14}`, 0, 2);
-
-  /* ---------- Hex readout during the repair ---------- */
-  const hexLine = () => {
-    let s = '';
-    for (let i = 0; i < 36; i++) s += Math.floor(Math.random() * 16).toString(16);
-    return s.replace(/(.{4})/g, '$1 ');
-  };
-
-  const startHex = () => {
-    hexTimer = setInterval(() => {
-      hexWrap.textContent = Array.from({ length: 12 }, () => hexLine()).join('\n');
-    }, 90);
-  };
-
-  const stopHex = () => {
-    clearInterval(hexTimer);
-    hexWrap.textContent = '';
-  };
-
-  /* ---------- Terminal log ---------- */
-  const typeLine = async (tag, text) => {
-    const p = document.createElement('p');
-    const tagEl = document.createElement('span');
-    tagEl.className = 'tag';
-    tagEl.textContent = tag + ' ';
-    const msg = document.createElement('span');
-    p.append(tagEl, msg);
-    logEl.appendChild(p);
-
-    for (let i = 1; i <= text.length; i++) {
-      msg.textContent = text.slice(0, i);
-      if (done) break;
-      await wait(14);
-    }
-    msg.textContent = text;
-  };
-
-  /* ---------- Repair: tiles are fixed in random order, two at a time ---------- */
-  const repairTiles = async () => {
-    const order = tiles.map((_, i) => i);
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [order[i], order[j]] = [order[j], order[i]];
-    }
-
-    const batch = 2;
-    for (let n = 0; n < order.length; n += batch) {
-      const end = Math.min(n + batch, order.length);
-      for (let k = n; k < end; k++) {
-        const tile = tiles[order[k]];
-        tile.classList.add('is-flash');
-        setTimeout(() => {
-          tile.classList.remove('is-flash');
-          tile.classList.add('is-fixed');
-        }, 60);
-      }
-      barFill.style.width = ((end / order.length) * 100).toFixed(1) + '%';
-      await wait(46);
-    }
-  };
-
-  /* ---------- Sequence ---------- */
-  const run = async () => {
-    await wait(140);
-    el.classList.add('is-boot');
-
-    await wait(1000);
-    el.classList.add('is-crack');
-
-    await typeLine('[sys]', 'display panel detected');
-    await typeLine('[fault]', '412 dead pixel clusters, glass fracture at impact point');
-    await typeLine('[scan]', 'reading frame buffer');
-
-    el.classList.add('is-repair');
-    startHex();
-    await typeLine('[sys]', 'bypassing panel lock');
-    await repairTiles();
-    stopHex();
-    el.classList.remove('is-repair');
-    el.classList.add('is-healed');
-
-    await typeLine('[ok]', `display restored, ${tiles.length} of ${tiles.length} tiles`);
-    await typeLine('[ok]', 'welcome, Sudhakar');
-    await wait(450);
-    finish();
-  };
-
-  /* ---------- Finish: 3D exit, then the site opens ---------- */
-  const finish = () => {
-    if (done) return;
-    done = true;
-
-    pending.forEach((entry) => {
-      clearTimeout(entry.timer);
-      entry.resolve();
-    });
-    pending.clear();
-
-    stopHex();
-    tiles.forEach((tile) => {
-      tile.classList.remove('is-flash');
-      tile.classList.add('is-fixed');
-    });
-    barFill.style.width = '100%';
-    el.classList.remove('is-repair');
-    el.classList.add('is-healed', 'is-exit');
-
-    el.style.transition = 'opacity 0.5s ease 0.45s';
-    el.style.opacity = '0';
-
-    setTimeout(() => {
-      root.classList.remove('is-preloading');
-      el.remove();
+  const finish=()=>{
+    if(done)return;
+    done=true;clearTimeout(sequenceTimer);stopHex();
+    tiles.forEach(t=>t.classList.add('is-fixed'));
+    barFill.style.width='100%';
+    el.classList.remove('is-repair');el.classList.add('is-healed','is-exit');
+    el.style.transition='opacity .55s ease .3s';el.style.opacity='0';
+    setTimeout(()=>{
+      root.classList.remove('is-preloading');el.remove();
       window.dispatchEvent(new Event('site:ready'));
-    }, 950);
+    },900);
   };
 
-  skipBtn.addEventListener('click', finish);
-  window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') finish();
-  });
+  const run=async()=>{
+    if(done)return;
+    el.classList.add('is-boot');
+    setStatus('DISPLAY ONLINE  /  GLASS FRACTURE DETECTED');
+    await sleep(650);if(done)return;
+    el.classList.add('is-crack');
+    setStatus('RECOVERING IMAGE BUFFER  /  VERIFYING IDENTITY');
+    await sleep(450);if(done)return;
+    el.classList.add('is-repair');startHex();
+    const order=tiles.map((_,i)=>i);
+    // Centre-out reconstruction makes the face recognizable early.
+    const centreX=(COLS-1)/2, centreY=(ROWS-1)/2;
+    order.sort((a,b)=>{
+      const da=Math.hypot((a%COLS)-centreX,Math.floor(a/COLS)-centreY);
+      const db=Math.hypot((b%COLS)-centreX,Math.floor(b/COLS)-centreY);
+      return da-db;
+    });
+    setStatus('DECODING HEX  /  RECONSTRUCTING PORTRAIT');
+    for(let n=0;n<order.length;n+=3){
+      if(done)return;
+      for(let k=n;k<Math.min(n+3,order.length);k++){
+        const tile=tiles[order[k]];
+        tile.classList.add('is-flash');
+        setTimeout(()=>{tile.classList.remove('is-flash');tile.classList.add('is-fixed');},190);
+      }
+      barFill.style.width=((Math.min(n+3,order.length)/order.length)*100)+'%';
+      await sleep(48);
+    }
+    if(done)return;
+    stopHex();el.classList.remove('is-repair');el.classList.add('is-healed');
+    setStatus('IDENTITY VERIFIED  /  WELCOME, SUDHAKAR');
+    await sleep(1050);if(!done)finish();
+  };
 
-  /* Decode the boot portrait before revealing any repair tiles. */
-  const portrait = el.querySelector('.pl-portrait');
-  const ready = portrait && portrait.decode
-    ? portrait.decode().catch(() => undefined)
-    : Promise.resolve();
-  ready.then(() => {
-    if (!done) run();
-  });
+  const start=()=>{
+    if(done)return;
+    if(portrait && portrait.decode) portrait.decode().catch(()=>{}).then(run);
+    else run();
+  };
+  skipBtn.addEventListener('click',finish);
+  window.addEventListener('keydown',e=>{if(e.key==='Escape')finish();});
+  start();
 })();
