@@ -28,8 +28,10 @@
     const col=i%COLS, row=Math.floor(i/COLS);
     const tile=document.createElement('i');
     tile.className='pl-tile';
-    const x=COLS===1?50:(col/(COLS-1))*100;
-    const y=ROWS===1?50:(row/(ROWS-1))*100;
+    // Zoom the boot portrait out to 86%, keeping the sliced tiles aligned.
+    const zoom=0.86;
+    const x=COLS===1?50:((col-(COLS*(1-zoom)/2))/(COLS*zoom-1))*100;
+    const y=ROWS===1?50:((row-(ROWS*(1-zoom)/2))/(ROWS*zoom-1))*100;
     tile.style.backgroundPosition='center, '+x.toFixed(2)+'% '+y.toFixed(2)+'%';
     tilesWrap.appendChild(tile);
     tiles.push(tile);
