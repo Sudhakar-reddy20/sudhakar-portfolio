@@ -417,3 +417,9 @@ html.is-preloading body {
 .pl-skip { border-color:rgba(255,255,255,.22);background:rgba(5,9,14,.55);backdrop-filter:blur(10px); }
 @media(max-width:600px){.pl-stage{width:94vw;gap:12px}.pl-bezel{border-radius:13px}.pl-identity{bottom:5%}.pl-log{font-size:.68rem}}
 @media(prefers-reduced-motion:reduce){.pl-tile,.pl-portrait,.pl-identity{transition:none!important}}
+
+
+/* Boot portrait framing: zoom out without changing the hero ID photo */
+.pl-portrait { transform: scale(.86) !important; }
+.is-healed .pl-portrait { transform: scale(.86) !important; }
+.pl-tile { background-size: 100% 100%, 1032% 602% !important; }
