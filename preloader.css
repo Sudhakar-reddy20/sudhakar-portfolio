@@ -423,3 +423,47 @@ html.is-preloading body {
 .pl-portrait { transform: scale(.86) !important; }
 .is-healed .pl-portrait { transform: scale(.86) !important; }
 .pl-tile { background-size: 100% 100%, 1032% 602% !important; }
+
+
+/* ---------- Minimal cinematic portrait preview ---------- */
+.pl-stage { width: min(440px, 88vw); gap: 18px; }
+.pl-tilt { width: 100%; animation: none; }
+.pl-monitor { width: 100%; transform: translateY(18px) scale(.96); }
+.is-boot .pl-monitor { transform: translateY(0) scale(1); }
+.pl-bezel {
+  aspect-ratio: 4 / 5;
+  padding: 9px;
+  border-radius: 26px;
+  background: linear-gradient(145deg, #202b3b, #080d16 55%, #030509);
+  box-shadow: 0 28px 90px rgba(0,0,0,.78), 0 0 70px rgba(58,160,255,.13), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.pl-screen { border-radius: 19px; background: radial-gradient(ellipse at 50% 40%, #101d30 0%, #050a12 48%, #020408 100%); }
+.pl-portrait {
+  inset: auto;
+  left: 50%; top: 41%;
+  width: 46%; height: 48%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 38%;
+  border: 2px solid rgba(105,190,255,.78);
+  box-shadow: 0 0 0 7px rgba(58,160,255,.07), 0 0 34px rgba(58,160,255,.34);
+  transform: translate(-50%,-50%) scale(.88);
+  opacity: 0;
+  filter: blur(10px) saturate(.75);
+}
+.is-repair .pl-portrait { opacity: .34; filter: blur(5px) saturate(.85); transform: translate(-50%,-50%) scale(.9); }
+.is-healed .pl-portrait { opacity: 1; filter: blur(0) saturate(1.04); transform: translate(-50%,-50%) scale(1); }
+.pl-tiles, .pl-dead, .pl-glass, .pl-glitch, .pl-scan, .pl-hex { display: none !important; }
+.pl-identity { left: 7%; right: 7%; bottom: 8%; gap: 8px; }
+.pl-identity-kicker { color: #8bcaff; letter-spacing: .28em; }
+.pl-identity strong { font-size: clamp(17px, 3.2vw, 25px); letter-spacing: .06em; }
+.pl-identity-role { color: rgba(210,232,255,.78); letter-spacing: .13em; }
+.pl-log { min-height: 1.8em; max-height: 1.8em; color: rgba(190,215,242,.72); }
+.pl-bar { max-width: 260px; border-radius: 99px; overflow: hidden; background: rgba(255,255,255,.12); }
+.pl-bar span { background: linear-gradient(90deg,#318bff,#8bd4ff); box-shadow: 0 0 14px rgba(58,160,255,.75); }
+@media(max-width:600px) {
+  .pl-stage { width: min(340px, 86vw); gap: 14px; }
+  .pl-bezel { border-radius: 22px; }
+  .pl-identity { bottom: 7%; }
+  .pl-identity strong { font-size: clamp(15px, 4.5vw, 21px); }
+}
