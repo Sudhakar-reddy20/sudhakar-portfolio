@@ -6,11 +6,23 @@
   --body: #b3c2d6;
   --slate: #6f7f96;
   --accent: #3aa0ff;
-  --accent-glow: rgba(58, 160, 255, 0.7);
+  --accent-rgb: 58, 160, 255;
+  --accent-glow: rgba(var(--accent-rgb), 0.7);
   --rule: #1a2433;
   --glass: rgba(12, 17, 25, 0.7);
   --serif: 'Montserrat', Arial, sans-serif;
   --sans: 'Montserrat', Arial, sans-serif;
+}
+
+/* Accent colour themes, switched with the colour dots (see features.js) */
+:root[data-accent="green"] {
+  --accent: #3ee08f;
+  --accent-rgb: 62, 224, 143;
+}
+
+:root[data-accent="amber"] {
+  --accent: #ffb23f;
+  --accent-rgb: 255, 178, 63;
 }
 
 *,
@@ -64,7 +76,7 @@ body::before {
   right: -25vw;
   width: 95vw;
   height: 95vh;
-  background: radial-gradient(closest-side, rgba(58, 160, 255, 0.12), transparent);
+  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.12), transparent);
   pointer-events: none;
   z-index: -2;
 }
@@ -75,8 +87,8 @@ body::after {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(58, 160, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(58, 160, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(var(--accent-rgb), 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.035) 1px, transparent 1px);
   background-size: 64px 64px;
   -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
   mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
@@ -134,7 +146,7 @@ img {
   pointer-events: none;
   background: radial-gradient(
     520px circle at var(--mx, 50%) var(--my, 30%),
-    rgba(58, 160, 255, 0.07),
+    rgba(var(--accent-rgb), 0.07),
     transparent 70%
   );
 }
@@ -168,7 +180,7 @@ html.has-cursor * {
   width: 40px;
   height: 40px;
   margin: -20px 0 0 -20px;
-  border: 1px solid rgba(58, 160, 255, 0.7);
+  border: 1px solid rgba(var(--accent-rgb), 0.7);
   transition: width 0.35s ease, height 0.35s ease, margin 0.35s ease, background-color 0.35s ease;
 }
 
@@ -176,7 +188,7 @@ html.has-cursor * {
   width: 64px;
   height: 64px;
   margin: -32px 0 0 -32px;
-  background-color: rgba(58, 160, 255, 0.08);
+  background-color: rgba(var(--accent-rgb), 0.08);
 }
 
 .scroll-progress {
@@ -307,7 +319,7 @@ html.has-cursor * {
   border-radius: 50%;
   color: var(--accent);
   background: var(--glass);
-  border: 1px solid rgba(58, 160, 255, 0.45);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   text-decoration: none;
@@ -437,11 +449,11 @@ html.has-cursor * {
 
 @keyframes ping {
   0% {
-    box-shadow: 0 0 0 0 rgba(58, 160, 255, 0.55);
+    box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.55);
   }
   75%,
   100% {
-    box-shadow: 0 0 0 10px rgba(58, 160, 255, 0);
+    box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0);
   }
 }
 
@@ -545,9 +557,9 @@ html.has-cursor * {
   z-index: 2;
   padding: 14px 14px 20px;
   background: var(--surface);
-  border: 1px solid rgba(58, 160, 255, 0.3);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
   border-radius: 2px;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(58, 160, 255, 0.08);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--accent-rgb), 0.08);
   overflow: hidden;
 }
 

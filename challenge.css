@@ -41,7 +41,7 @@
 .flag-input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(58, 160, 255, 0.2);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
 }
 
 .flag-submit {
@@ -89,4 +89,20 @@
 
 .challenge-btn {
   margin-top: 28px;
+}
+
+/* Contact actions: resume and booking buttons */
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.contact-actions .resume-btn {
+  margin-top: 0;
+}
+
+.booking-btn[hidden] {
+  display: none;
 }

@@ -11,6 +11,8 @@ A static, single-page portfolio for GitHub Pages, with a "Test your knowledge" K
 | script.js | Hero intro, side rail, back-to-top, copy buttons, Guntur time, scroll 3D |
 | challenge.js | Checks the flag and reveals the phone number (also used by the Kali page) |
 | challenge.css | Styles for the flag form and the challenge section |
+| features.js | Colour dots, command palette (/ or Ctrl+K), availability countdown, scan-line sweep |
+| features.css | Styles for the colour dots, glitch effect, palette, badge wall and packet-flow diagram |
 | kali.html | The Kali machine page: terminal, 5 minute timer, win and lose panels |
 | kali.js | Kali machine: virtual files, hints folder, commands, timer, win check |
 | kali.css | Styles for the Kali machine page |

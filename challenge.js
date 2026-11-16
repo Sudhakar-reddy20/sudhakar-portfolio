@@ -1,53 +1,27 @@
 (() => {
   'use strict';
 
-  const API_URL = 'https://' +
-    'sudhakar-portfolio-challenge' +
-    '.onteddusudhakarreddy20' +
-    '.workers.dev/verify';
+  /* SHA-256 of the normalised flag. The flag text itself is not stored here. */
+  const FLAG_HASH = '3ed9547e20c88c3e54a8b79443b63eb8ba644601f2997bf0275cfd474eb1245d';
 
-  const normalise = (text) => String(text).trim().toLowerCase();
+  /* Phone number, base64 encoded so it does not show up in plain text in the source */
+  const PHONE_B64 = 'KzkxIDgxMjU1MTMxMzU=';
 
-  const requestVerification = async (text) => {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ flag: normalise(text) })
-    });
+  const normalise = (text) => text.trim().toLowerCase();
 
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      throw new Error('Invalid server response');
-    }
-
-    if (!response.ok || !data.success) return null;
-    return data;
+  const sha256Hex = async (text) => {
+    const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(bytes), (b) => b.toString(16).padStart(2, '0')).join('');
   };
 
   const verify = async (text) => {
-    try {
-      const data = await requestVerification(text);
-      return !!data?.success;
-    } catch {
-      return false;
-    }
+    if (!window.crypto || !crypto.subtle) return false;
+    return (await sha256Hex(normalise(text))) === FLAG_HASH;
   };
 
-  const revealPhone = async (text) => {
-    try {
-      const data = await requestVerification(text);
-      return data?.success && typeof data.phone === 'string'
-        ? data.phone
-        : null;
-    } catch {
-      return null;
-    }
-  };
+  window.Challenge = { verify, normalise };
 
-  window.Challenge = { verify, normalise, revealPhone };
-
+  /* ---------- Contact section: reveal the phone number after the right flag ---------- */
   const form = document.getElementById('flag-form');
   if (!form) return;
 
@@ -57,8 +31,6 @@
   const link = document.getElementById('phone-link');
   const copy = document.getElementById('phone-copy');
 
-  if (!input || !msg || !reveal || !link || !copy) return;
-
   const setMsg = (text, kind) => {
     msg.textContent = text;
     msg.className = 'flag-msg' + (kind ? ' is-' + kind : '');
@@ -66,27 +38,34 @@
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-
     if (!input.value.trim()) {
       setMsg('Enter the flag first.', 'error');
       return;
     }
-
-    setMsg('Checking...', '');
-
-    const number = await revealPhone(input.value);
-
-    if (!number) {
-      setMsg('Incorrect flag, or the verification server is unavailable. Please try again.', 'error');
+    if (!window.crypto || !crypto.subtle) {
+      setMsg('The flag check needs a secure (https) connection. Open the live site.', 'error');
       return;
     }
 
+    setMsg('Checking...', '');
+    let ok = false;
+    try {
+      ok = await verify(input.value);
+    } catch (err) {
+      ok = false;
+    }
+
+    if (!ok) {
+      setMsg('Not the flag. Keep hunting on the Kali machine.', 'error');
+      return;
+    }
+
+    const number = atob(PHONE_B64);
     link.textContent = number;
     link.href = 'tel:' + number.replace(/[^\d+]/g, '');
     copy.dataset.copy = number;
     reveal.hidden = false;
     form.hidden = true;
-
     setMsg('Flag accepted. Here is my number.', 'ok');
   });
 })();

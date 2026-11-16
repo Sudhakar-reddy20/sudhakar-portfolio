@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="preloader.css" />
   <link rel="stylesheet" href="challenge.css" />
+  <link rel="stylesheet" href="features.css" />
 
   <!-- Runs before the page paints: shows the intro only when motion is allowed.
        Safety net: if the intro script never finishes, the page opens after 12 seconds. -->
@@ -65,6 +66,12 @@
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="cursor-ring" aria-hidden="true"></div>
   <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="scan-sweep" aria-hidden="true"></div>
+  <div class="theme-switch" role="group" aria-label="Accent colour">
+    <button type="button" class="theme-dot" data-accent="blue" style="--swatch:#3aa0ff" aria-label="Blue accent" aria-pressed="true"></button>
+    <button type="button" class="theme-dot" data-accent="green" style="--swatch:#3ee08f" aria-label="Green accent" aria-pressed="false"></button>
+    <button type="button" class="theme-dot" data-accent="amber" style="--swatch:#ffb23f" aria-label="Amber accent" aria-pressed="false"></button>
+  </div>
 
   <!-- Side navigation: a slim rail that opens on hover (right edge on phones) -->
   <nav class="side-nav" aria-label="Sections">
@@ -131,6 +138,7 @@
           <div class="status-row">
             <p class="status"><span class="status-dot" aria-hidden="true"></span>Open to SOC roles</p>
             <p class="local-time" id="local-time">Guntur, India</p>
+            <p class="avail" id="avail"></p>
           </div>
           <h1 id="hero-title" class="name">
             <span class="line">Onteddu</span>
@@ -155,7 +163,7 @@
           <article class="id-card tilt">
             <div class="id-top">Cybersecurity and SOC</div>
             <div class="photo">
-              <img src="photo.jpg" alt="Portrait of Onteddu Sudhakar Reddy" width="900" height="1200" />
+              <img src="photo.jpg" alt="Portrait of Onteddu Sudhakar Reddy" width="720" height="960" fetchpriority="high" decoding="async" />
               <span class="scan" aria-hidden="true"></span>
             </div>
             <div class="id-body">
@@ -236,6 +244,23 @@
           <article class="project">
             <h3>threatlens</h3>
             <p class="project-text">Evidence-driven Python SOC log analysis and SSH threat detection platform.</p>
+            <div class="flow" aria-hidden="true">
+              <svg viewBox="0 0 600 110" focusable="false">
+                <path class="flow-line" d="M60 55 H540" />
+                <rect class="flow-node" x="10" y="38" width="100" height="34" rx="4" />
+                <rect class="flow-node" x="130" y="38" width="100" height="34" rx="4" />
+                <rect class="flow-node" x="250" y="38" width="100" height="34" rx="4" />
+                <rect class="flow-node" x="370" y="38" width="100" height="34" rx="4" />
+                <rect class="flow-node" x="490" y="38" width="100" height="34" rx="4" />
+                <text class="flow-label" x="60" y="60">Logs</text>
+                <text class="flow-label" x="180" y="60">Parse</text>
+                <text class="flow-label" x="300" y="60">Detect</text>
+                <text class="flow-label" x="420" y="60">Evidence</text>
+                <text class="flow-label" x="540" y="60">Report</text>
+                <circle class="flow-dot" r="4"><animateMotion dur="4s" repeatCount="indefinite" path="M60 55 H540" /></circle>
+                <circle class="flow-dot" r="4"><animateMotion dur="4s" begin="2s" repeatCount="indefinite" path="M60 55 H540" /></circle>
+              </svg>
+            </div>
             <p class="stack">Python, SOC, log analysis, SSH</p>
             <a href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">View on GitHub</a>
           </article>
@@ -276,6 +301,8 @@
               <p class="stat-label">Leaderboard placement since joining</p>
             </div>
           </div>
+          <div class="badge-wall" role="img" aria-label="Hackversity badges: 12 earned, 2 in progress"><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge is-wip"></span><span class="badge is-wip"></span></div>
+          <p class="badge-legend"><span class="badge" aria-hidden="true"></span> earned <span class="badge is-wip" aria-hidden="true"></span> in progress</p>
           <p class="lab-note">Joined Hackversity about a month ago and has stayed in the top three of the leaderboard ever since.</p>
           <a href="https://hackversity.com" target="_blank" rel="noopener noreferrer">Visit Hackversity</a>
         </div>
@@ -418,7 +445,11 @@
               </dd>
             </div>
           </dl>
-          <a class="btn btn-primary resume-btn" href="resume.pdf" download>Download resume</a>
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="resume.pdf" download>Download resume</a>
+            <!-- Paste your Calendly or Cal.com link in href, then delete the hidden attribute -->
+            <a class="btn btn-ghost booking-btn" href="https://cal.com/YOUR-USERNAME" target="_blank" rel="noopener noreferrer" hidden>Book an interview</a>
+          </div>
         </div>
       </div>
     </section>
@@ -436,7 +467,7 @@
 
   <footer class="footer">
     <div class="container">
-      <p class="footer-note">&copy; 2026 Onteddu Sudhakar Reddy</p>
+      <p class="footer-note">&copy; 2026 Onteddu Sudhakar Reddy &middot; Press / to search</p>
     </div>
     <p class="mega" aria-hidden="true">Sudhakar</p>
   </footer>
@@ -447,5 +478,6 @@
   <script src="preloader.js"></script>
   <script src="script.js"></script>
   <script src="challenge.js"></script>
+  <script src="features.js"></script>
 </body>
 </html>

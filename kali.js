@@ -3,9 +3,8 @@
 
   const LIMIT_MS = 5 * 60 * 1000;
   const KEY = 'sr-kali-session';
-  const CAPTURE_KEY = 'sr-kali-captured-flag';
   const HOME = '/home/kali';
-  const ENCODED_LOOT = 'RkxBR3tzcmlfbWl0dGFwYWxsaX0=';
+  const FLAG = 'FLAG{sri_mittapalli}';
   const FLAG_RE = /FLAG\{[^}\n]+\}/g;
 
   /* ---------- Virtual machine files ---------- */
@@ -23,7 +22,7 @@
   files[HOME + '/hints/04-submit.txt'] =
     'The flag is a detail about the owner.\n' +
     'Copy the flag once you capture it, then paste it on the portfolio.';
-  files[HOME + '/.loot/campus.enc'] = ENCODED_LOOT;
+  files[HOME + '/.loot/campus.enc'] = btoa(FLAG);
 
   /* ---------- Elements ---------- */
   const out = document.getElementById('out');
@@ -35,11 +34,19 @@
   const resultKicker = document.getElementById('result-kicker');
   const resultTitle = document.getElementById('result-title');
   const resultText = document.getElementById('result-text');
-  const retryBtn = document.getElementById('kali-retry');
   const flagCode = document.getElementById('flag-code');
   const copyBtn = document.getElementById('kali-copy');
+  const retryBtn = document.getElementById('kali-retry');
 
-  /* ---------- Fresh challenge on every page load ---------- */
+  /* ---------- Session (per tab, so reloading does not give a new 5 minutes) ---------- */
+  const readSession = () => {
+    try {
+      return JSON.parse(sessionStorage.getItem(KEY)) || null;
+    } catch (err) {
+      return null;
+    }
+  };
+
   const writeSession = (data) => {
     try {
       sessionStorage.setItem(KEY, JSON.stringify(data));
@@ -54,14 +61,15 @@
     return data;
   };
 
-  // Clear any previous win/loss so every reload starts a brand-new challenge.
-  try { sessionStorage.removeItem(KEY); } catch (err) { /* storage may be blocked */ }
-  try { localStorage.removeItem(CAPTURE_KEY); } catch (err) { /* storage may be blocked */ }
-  let session = newSession();
+  let session = readSession();
+  if (!session || typeof session.deadline !== 'number') session = newSession();
+  if (session.status === 'playing' && Date.now() >= session.deadline) {
+    session = { status: 'lost', deadline: session.deadline };
+    writeSession(session);
+  }
   let status = session.status;
 
   const state = { cwd: HOME, history: [], hIdx: 0 };
-  let challengeRunId = 0;
 
   /* ---------- File helpers ---------- */
   const normalise = (path) => {
@@ -201,51 +209,25 @@
     if (left === 0) finish('lost');
   };
 
-  /* ---------- Always restart when the browser restores this page from its back/forward cache ---------- */
-  const startFreshChallenge = () => {
-    challengeRunId += 1;
-    try { sessionStorage.removeItem(KEY); } catch (err) { /* storage may be blocked */ }
-    try { localStorage.removeItem(CAPTURE_KEY); } catch (err) { /* storage may be blocked */ }
-    session = newSession();
-    status = 'playing';
-    state.cwd = HOME;
-    state.history = [];
-    state.hIdx = 0;
-    out.textContent = '';
-    topPrompt.textContent = promptTop();
-    resultEl.hidden = true;
-    input.disabled = false;
-    input.value = '';
-    copyBtn.textContent = 'Copy flag & return to portfolio';
-    copyBtn.classList.remove('is-copied');
-    intro();
-    renderTimer();
-    input.focus();
-  };
-
-  window.addEventListener('pageshow', (event) => {
-    if (event.persisted) startFreshChallenge();
-  });
-
   /* ---------- Result panel ---------- */
   const showResult = (kind) => {
     const won = kind === 'won';
     resultKicker.textContent = won ? 'Winner' : 'Loser';
-    resultTitle.textContent = won ? 'OOPS! YOU CAUGHT ME.' : "Time's up";
+    resultTitle.textContent = won ? 'Oh not! You have caught me' : "Time's up";
     resultText.textContent = won
-      ? 'You captured the flag. Copy it below, then return to the portfolio and submit it to reveal the phone number.'
+      ? 'You captured the flag. Copy it, then paste it on the portfolio to reveal the phone number.'
       : 'You did not capture the flag within 5 minutes.';
-    flagCode.textContent = won && session.flag ? session.flag : '';
-    flagCode.hidden = !won || !session.flag;
-    copyBtn.hidden = !won || !session.flag;
+    flagCode.textContent = FLAG;
+    flagCode.hidden = !won;
+    copyBtn.hidden = !won;
     retryBtn.hidden = won;
     resultEl.hidden = false;
   };
 
-  const finish = (kind, capturedFlag) => {
+  const finish = (kind) => {
     if (status !== 'playing') return;
     status = kind;
-    session = { status: kind, deadline: session.deadline, ...(capturedFlag ? { flag: capturedFlag } : {}) };
+    session = { status: kind, deadline: session.deadline };
     writeSession(session);
     input.disabled = true;
     if (kind === 'won') {
@@ -258,15 +240,13 @@
     showResult(kind);
   };
 
-  /* ---------- Flag detection: verified by the Cloudflare Worker ---------- */
+  /* ---------- Flag detection: checked against the hash in challenge.js ---------- */
   const scanForFlag = (lines) => {
     if (status !== 'playing') return;
     const matches = lines.join('\n').match(FLAG_RE) || [];
-    const runId = challengeRunId;
     matches.forEach(async (candidate) => {
       if (status !== 'playing' || !window.Challenge) return;
-      const valid = await window.Challenge.verify(candidate);
-      if (valid && runId === challengeRunId && status === 'playing') finish('won', candidate);
+      if (await window.Challenge.verify(candidate)) finish('won');
     });
   };
 
@@ -307,40 +287,50 @@
 
   input.addEventListener('keydown', onKey);
 
-  copyBtn.addEventListener('click', async () => {
-    if (!session.flag) return;
-    let copied = false;
+  /* ---------- Copy the flag ---------- */
+  const fallbackCopy = (text) => {
+    const field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.opacity = '0';
+    document.body.appendChild(field);
+    field.select();
+    let ok = false;
     try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(session.flag);
-        copied = true;
-      }
-    } catch (err) { /* use the compatibility fallback below */ }
-    if (!copied) {
-      const temp = document.createElement('textarea');
-      temp.value = session.flag;
-      temp.setAttribute('readonly', '');
-      temp.style.position = 'fixed';
-      temp.style.opacity = '0';
-      document.body.appendChild(temp);
-      temp.select();
-      try { copied = document.execCommand('copy'); } catch (err) { copied = false; }
-      temp.remove();
+      ok = document.execCommand('copy');
+    } catch (err) {
+      ok = false;
     }
-    if (copied) {
-      copyBtn.textContent = 'Copied! Returning to portfolio…';
-      copyBtn.classList.add('is-copied');
-      window.location.href = 'index.html#contact';
-    } else {
-      flagCode.hidden = false;
-      const selection = window.getSelection();
-      const range = document.createRange();
-      range.selectNodeContents(flagCode);
-      selection.removeAllRanges();
-      selection.addRange(range);
-      copyBtn.textContent = 'Copy failed — press Cmd+C, then return';
+    field.remove();
+    return ok ? Promise.resolve() : Promise.reject(new Error('copy failed'));
+  };
+
+  const copyText = (text) => {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
     }
+    return fallbackCopy(text);
+  };
+
+  const copyLabel = copyBtn.textContent;
+  let copyTimer = null;
+  copyBtn.addEventListener('click', () => {
+    copyText(FLAG).then(
+      () => flashCopy('Copied', true),
+      () => flashCopy('Copy failed', false)
+    );
   });
+
+  const flashCopy = (label, ok) => {
+    copyBtn.textContent = label;
+    copyBtn.classList.toggle('is-copied', ok);
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => {
+      copyBtn.textContent = copyLabel;
+      copyBtn.classList.remove('is-copied');
+    }, 1800);
+  };
 
   /* ---------- Try again (after a loss) ---------- */
   retryBtn.addEventListener('click', () => {
