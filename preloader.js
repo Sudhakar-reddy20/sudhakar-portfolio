@@ -50,6 +50,11 @@
   for (let i = 0; i < COLS * ROWS; i++) {
     const tile = document.createElement('i');
     tile.className = 'pl-tile';
+    const col = i % COLS;
+    const row = Math.floor(i / COLS);
+    const x = COLS === 1 ? 50 : (col / (COLS - 1)) * 100;
+    const y = ROWS === 1 ? 50 : (row / (ROWS - 1)) * 100;
+    tile.style.backgroundPosition = 'center, ' + x.toFixed(2) + '% ' + y.toFixed(2) + '%';
     tilesWrap.appendChild(tile);
     tiles.push(tile);
   }
@@ -243,5 +248,12 @@
     if (event.key === 'Escape') finish();
   });
 
-  run();
+  /* Decode the boot portrait before revealing any repair tiles. */
+  const portrait = el.querySelector('.pl-portrait');
+  const ready = portrait && portrait.decode
+    ? portrait.decode().catch(() => undefined)
+    : Promise.resolve();
+  ready.then(() => {
+    if (!done) run();
+  });
 })();
