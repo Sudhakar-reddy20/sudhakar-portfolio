@@ -1,62 +1,98 @@
-# Onteddu Sudhakar Reddy: Portfolio (v13)
+# Onteddu Sudhakar Reddy — Cybersecurity Portfolio
 
-A static, single-page portfolio for GitHub Pages, with a "Test your knowledge" Kali challenge. No build step. Plain HTML, CSS and JavaScript, with GSAP and Lenis loaded from CDNs for the 3D scroll motion.
+<p align="center">
+  <a href="https://sudhakar-reddy20.github.io/sudhakar-portfolio/"><img src="https://img.shields.io/badge/LIVE%20PORTFOLIO-Open-0EA5E9?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live portfolio" /></a>
+  <a href="https://github.com/Sudhakar-reddy20"><img src="https://img.shields.io/badge/GITHUB-Profile-111827?style=for-the-badge&logo=github&logoColor=white" alt="GitHub profile" /></a>
+  <a href="https://www.linkedin.com/in/sudhakar-reddy1920"><img src="https://img.shields.io/badge/LINKEDIN-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+</p>
 
-## Files
+A responsive, single-page personal portfolio built with HTML, CSS and vanilla JavaScript and deployed through GitHub Pages. The visual direction is a dark blue security-console interface with an animated boot sequence, interactive project navigation and a browser-based Kali-themed learning challenge.
+
+## Professional snapshot
+
+- **Target roles:** SOC Analyst / Junior Security Analyst
+- **Education:** B.Tech Computer Science & Engineering · Expected 2027
+- **Availability:** Open to internships and entry-level opportunities
+- **Focus:** Defensive security, log analysis, Python automation and hands-on security labs
+- **Contact:** [Sudhakar1558796@gmail.com](mailto:Sudhakar1558796@gmail.com)
+- **LinkedIn:** [sudhakar-reddy1920](https://www.linkedin.com/in/sudhakar-reddy1920)
+
+## Featured technical work
+
+| Project | What it demonstrates |
+|---|---|
+| [ThreatLens](https://github.com/Sudhakar-reddy20/threatlens) | Python-based Linux SSH authentication log parsing, repeated-failure detection, failure-to-success correlation, evidence preservation and JSON/CSV reporting |
+| [Windows Event Log Analyzer](https://github.com/Sudhakar-reddy20/threatlens/tree/main/projects/windows-event-log-analyzer) | Defensive analysis of exported Windows Security Event XML, authentication patterns and selected account/audit events |
+| [Pocket SOC Lab](https://github.com/Sudhakar-reddy20) | Portable local practice with synthetic authentication logs and Python detections; see the profile README for the lab overview |
+
+## Experience & training
+
+- **Datavalley:** IoT internship
+- **ExcelR:** Full Stack Java / MERN internship
+- **TryHackMe:** Search Skills, Defensive Security Intro, Offensive Security Intro
+- **Hackversity:** 100+ hands-on labs completed
+
+Internship dates and exact role titles are intentionally not stated until confirmed. Training modules and lab practice are not represented as professional certifications.
+
+## Portfolio features
+
+- Animated boot / intro sequence with a skip control.
+- Responsive dark interface with blue, green and amber accent choices.
+- Reduced-motion-aware intro behavior and calm mode.
+- Interactive project and skills sections.
+- Command palette and copy-summary utilities.
+- A Kali-themed browser challenge with a timer, hints and flag check.
+- Resume and certificate links.
+
+## Tech stack
+
+- HTML5, CSS3 and vanilla JavaScript
+- GSAP and Lenis loaded from CDNs for motion effects
+- GitHub Pages for static hosting
+- Browser-native Web Crypto API for the challenge flag check
+
+## Repository structure
 
 | File | Purpose |
 |---|---|
-| index.html | The portfolio, the hidden phone form and the Test your knowledge button |
-| style.css | Hacker blue theme, layout, side rail, back-to-top, print styles |
-| script.js | Hero intro, side rail, back-to-top, copy buttons, Guntur time, scroll 3D |
-| challenge.js | Checks the flag and reveals the phone number (also used by the Kali page) |
-| challenge.css | Styles for the flag form and the challenge section |
-| features.js | Colour dots, command palette (/ or Ctrl+K), availability countdown, scan-line sweep |
-| features.css | Styles for the colour dots, glitch effect, palette, badge wall, packet-flow diagram, future-role ID card and calm mode |
-| idcard.js | The ID card: rotates through future roles, role buttons, `?role=` links |
-| visitor.js | Calm mode (remembered per visitor) and the "Copy my summary" button |
-| kali.html | The Kali machine page: terminal, 5 minute timer, win and lose panels |
-| kali.js | Kali machine: virtual files, hints folder, commands, timer, win check |
-| kali.css | Styles for the Kali machine page |
-| preloader.css, preloader.js | Intro animation (cracked display) |
-| photo.jpg | Profile photo in the ID card |
-| boot-photo.jpg | Photo that appears on the boot screen as the display is repaired |
-| resume.pdf | Linked from the hero and Contact |
-| nptel-hci.pdf, nptel-sna.pdf | NPTEL certificates |
-| README.md | This file |
+| `index.html` | Main portfolio page and section content |
+| `style.css`, `features.css`, `challenge.css`, `preloader.css`, `kali.css` | Layout, interactions, challenge and intro styling |
+| `script.js`, `features.js`, `idcard.js`, `visitor.js`, `challenge.js`, `kali.js`, `preloader.js` | Page behavior and interactive features |
+| `kali.html` | Browser-based challenge page |
+| `photo.jpg`, `boot-photo.jpg` | Portfolio imagery |
+| `resume.pdf` | Resume linked from the site |
+| `nptel-hci.pdf`, `nptel-sna.pdf` | NPTEL certificate documents |
 
-## Put it live on GitHub Pages
+## Run locally
 
-1. Create a public repository named `sudhakar-portfolio`.
-2. Upload every file above to the repository root.
-3. Settings, then Pages. Deploy from a branch: `main`, folder `/ (root)`. Save.
-4. The site is at https://sudhakar-reddy20.github.io/sudhakar-portfolio/
+No build step is required.
 
-The flag check uses the browser's crypto functions, which need https. GitHub Pages is https, so it works on the live site.
+```bash
+git clone https://github.com/Sudhakar-reddy20/sudhakar-portfolio.git
+cd sudhakar-portfolio
+python3 -m http.server 8000
+```
 
-## How the challenge works
+Open [http://localhost:8000](http://localhost:8000) in a browser. Some browser APIs and the flag check are intended to run on HTTPS; test the deployed GitHub Pages site for the full experience.
 
-- Button: "Test your knowledge" at the bottom of the portfolio opens kali.html.
-- Kali machine: 5 minutes from when the page opens (a reload keeps the same timer). The hints are in the `hints` folder inside the machine (`ls hints`, then `cat hints/01-start.txt`).
-- Winner: the visitor captures the flag. A panel says "Oh not! You have caught me" and offers Copy flag.
-- Loser: time runs out. The panel says "Time's up" and offers Try again.
-- Contact: the phone number is hidden. Pasting the exact flag into the form reveals it.
+## Deployment
 
-## Change the flag
+The live site is:
 
-1. In `kali.js`, change `FLAG` (the format is `FLAG{...}`).
-2. In `challenge.js`, replace `FLAG_HASH` with the SHA-256 of the lowercase flag. On a computer with a terminal:
-   `printf 'flag{your_text}' | sha256sum`
-3. In `challenge.js`, replace `PHONE_B64` with your number encoded in base64:
-   `printf '+91 XXXXXXXXXX' | base64`
+**[https://sudhakar-reddy20.github.io/sudhakar-portfolio/](https://sudhakar-reddy20.github.io/sudhakar-portfolio/)**
 
-## Change the future roles
+GitHub Pages is configured to publish the static site. Changes pushed to the deployment branch are published by the repository's Pages workflow/settings.
 
-1. In `idcard.js`, edit the `ROLES` list: the title, the track (Blue team, Red team or Build), the mission sentence and the colour (`rgb`, as "red, green, blue").
-2. The card rotates every 6 seconds. It pauses while the mouse is over it, and it stops when a visitor picks a role.
-3. "Copy link to this role" gives a link such as `...index.html?role=pentest`, which opens on that role.
+## Security and privacy note
 
-## Notes
+The Kali-themed challenge is an educational browser interaction, not a security boundary. Client-side JavaScript and page assets are visible to visitors; do not store real secrets, private contact data, credentials or sensitive tokens in this repository. Only use the challenge against its own local, simulated environment.
 
-- This is a static site, so the checks run in the visitor's browser. A visitor who reads the page source can find the flag. It is a fun challenge, not a secure lock.
-- Fonts (Montserrat) and CDN scripts need an internet connection.
+## Contact
+
+- Email: [Sudhakar1558796@gmail.com](mailto:Sudhakar1558796@gmail.com)
+- LinkedIn: [linkedin.com/in/sudhakar-reddy1920](https://www.linkedin.com/in/sudhakar-reddy1920)
+- GitHub: [github.com/Sudhakar-reddy20](https://github.com/Sudhakar-reddy20)
+
+---
+
+<p align="center"><sub>Built to document practical learning, project evidence and growth toward a defensive security career.</sub></p>
