@@ -20,6 +20,7 @@ A static, single-page portfolio for GitHub Pages, with a "Test your knowledge" K
 | kali.css | Styles for the Kali machine page |
 | preloader.css, preloader.js | Intro animation (cracked display) |
 | photo.jpg | Profile photo in the ID card |
+| boot-photo.jpg | Photo that appears on the boot screen as the display is repaired |
 | resume.pdf | Linked from the hero and Contact |
 | nptel-hci.pdf, nptel-sna.pdf | NPTEL certificates |
 | README.md | This file |
