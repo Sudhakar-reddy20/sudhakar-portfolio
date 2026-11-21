@@ -27,3 +27,5 @@
   .portfolio-card { transition: none; }
   .portfolio-card:hover { transform: none; }
 }
+
+.featured-project{border-color:rgba(var(--accent-rgb),.8);background:linear-gradient(145deg,rgba(13,29,45,.98),rgba(7,11,17,.94))}.project-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%;margin:8px 0}.project-facts div{padding:12px;background:rgba(0,0,0,.22);border:1px solid var(--rule)}.project-facts strong,.project-facts span{display:block}.project-facts strong{font-size:1.35rem;color:var(--accent)}.project-facts span{font-size:.72rem;color:var(--slate)}@media(max-width:760px){.project-facts{grid-template-columns:1fr}}
