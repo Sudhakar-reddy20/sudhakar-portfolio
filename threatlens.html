@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ThreatLens technical case study: Python-based Linux SSH authentication log analysis, evidence-backed detections, and SOC triage workflow.">
+  <title>ThreatLens Case Study | Onteddu Sudhakar Reddy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="threatlens-case-study.css">
+</head>
+<body>
+  <header class="topbar"><a href="index.html#home">← Back to portfolio</a><span>PROJECT / 001</span><a href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">Source repository ↗</a></header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">BLUE TEAM ENGINEERING · PYTHON · LOG ANALYSIS</p>
+      <h1>THREAT<span>LENS</span></h1>
+      <p class="tagline">See the evidence. Detect the threat.</p>
+      <p class="intro">An evidence-driven command-line tool that analyzes Linux SSH authentication logs, identifies suspicious login patterns, and produces structured reports for human investigation.</p>
+      <div class="hero-actions"><a class="button primary" href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">Inspect source code ↗</a><a class="button" href="#sample-investigation">View sample investigation ↓</a></div>
+      <div class="metrics">
+        <div><strong>2</strong><span>Detection rules</span></div>
+        <div><strong>10</strong><span>Parsed sample events</span></div>
+        <div><strong>2</strong><span>Expected alerts</span></div>
+        <div><strong>JSON + CSV</strong><span>Report formats</span></div>
+      </div>
+      <p class="disclaimer">Local rule-based prototype · Synthetic sample data · Not a live SIEM or automated response system</p>
+    </section>
+
+    <section class="content-section">
+      <p class="eyebrow">01 / PROBLEM</p><h2>Why I built it</h2>
+      <p>SSH authentication logs contain useful incident clues, but an analyst still needs to identify patterns across timestamps, source addresses, accounts, and outcomes. ThreatLens turns a local log file into normalized events and highlights two patterns that deserve triage.</p>
+      <div class="two-col">
+        <article class="panel"><h3>Repeated authentication failures</h3><p>Several failed attempts from one source within a defined time window may indicate password guessing or a misconfigured client. Context is required before classifying it as malicious.</p></article>
+        <article class="panel"><h3>Success after failures</h3><p>A successful login after repeated failures from the same source raises the priority of the investigation. It does not, by itself, confirm that an account was compromised.</p></article>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <p class="eyebrow">02 / WORKFLOW</p><h2>From raw log to analyst-ready evidence</h2>
+      <div class="pipeline"><div>SSH auth log<strong>Input</strong></div><b>→</b><div>Parser<strong>Normalize</strong></div><b>→</b><div>Detection engine<strong>Correlate</strong></div><b>→</b><div>Evidence<strong>Preserve</strong></div><b>→</b><div>JSON / CSV<strong>Report</strong></div></div>
+      <ol class="steps">
+        <li><strong>Read:</strong> load a local authentication log file and skip blank lines.</li>
+        <li><strong>Parse:</strong> extract supported SSH records into structured events, validating timestamps, IP addresses, and source ports.</li>
+        <li><strong>Detect:</strong> group events by source IP and apply configurable time-window rules.</li>
+        <li><strong>Preserve:</strong> attach the original matching log lines and usernames to each alert.</li>
+        <li><strong>Report:</strong> export structured JSON and CSV output for review.</li>
+      </ol>
+    </section>
+
+    <section class="content-section" id="detection-logic">
+      <p class="eyebrow">03 / DETECTION LOGIC</p><h2>Two rules, explicit evidence</h2>
+      <article class="rule">
+        <div class="rule-head"><span>TL-SSH-001</span><span class="severity high">HIGH · PROJECT LABEL</span></div>
+        <h3>Repeated SSH authentication failures</h3>
+        <div class="rule-spec"><div><small>Default threshold</small><strong>5 failures</strong></div><div><small>Time window</small><strong>10 minutes</strong></div><div><small>Grouping</small><strong>Source IP</strong></div></div>
+        <p>The detector sorts events by timestamp, then finds the first rolling window that reaches the failure threshold. It emits one alert for each qualifying contiguous failure burst, rather than generating overlapping duplicate alerts for every subsequent window. A quiet gap longer than the configured window starts a new burst.</p>
+        <p class="evidence-note">Alert evidence includes the original lines in the first qualifying window and all usernames targeted in that window.</p>
+      </article>
+      <article class="rule">
+        <div class="rule-head"><span>TL-SSH-002</span><span class="severity critical">CRITICAL · PROJECT LABEL</span></div>
+        <h3>Successful login following repeated failures</h3>
+        <div class="rule-spec"><div><small>Default threshold</small><strong>3 prior failures</strong></div><div><small>Time window</small><strong>10 minutes</strong></div><div><small>Grouping</small><strong>Source IP</strong></div></div>
+        <p>For each successful login, the detector checks for the configured number of failures from the same source IP during the preceding time window. The evidence includes the preceding failures and the successful event, including usernames involved.</p>
+        <p class="evidence-note">Severity labels are project-defined triage priorities, not a universal incident classification standard.</p>
+      </article>
+    </section>
+
+    <section class="content-section" id="sample-investigation">
+      <p class="eyebrow">04 / SAMPLE INVESTIGATION</p><h2>What the included dataset shows</h2>
+      <p>The repository includes a synthetic 11-line SSH log sample. Ten records are supported authentication events (eight failures and two successes); one connection-close record is unsupported by the current parser and is counted rather than silently treated as an authentication event.</p>
+      <div class="finding">
+        <div class="finding-title"><span>FINDING 01</span><span class="severity high">HIGH · TL-SSH-001</span></div>
+        <h3>Repeated failures from 192.0.2.50</h3>
+        <p>Five failed attempts occurred between 10:00:01 and 10:04:30, targeting <code>admin</code> and <code>root</code>.</p>
+        <pre>Nov  4 10:00:01 ... Failed password for admin from 192.0.2.50
+Nov  4 10:01:10 ... Failed password for admin from 192.0.2.50
+Nov  4 10:02:15 ... Failed password for root  from 192.0.2.50
+Nov  4 10:03:20 ... Failed password for admin from 192.0.2.50
+Nov  4 10:04:30 ... Failed password for admin from 192.0.2.50</pre>
+        <p><strong>Analyst assessment:</strong> consistent with password guessing, but the pattern alone does not establish malicious intent.</p>
+      </div>
+      <div class="finding">
+        <div class="finding-title"><span>FINDING 02</span><span class="severity critical">CRITICAL · TL-SSH-002</span></div>
+        <h3>Successful login after failures from 198.51.100.25</h3>
+        <p>Three failed password attempts for <code>testuser</code> were followed by a successful password login at 10:06:30 from the same source.</p>
+        <pre>Nov  4 10:05:00 ... Failed password for testuser from 198.51.100.25
+Nov  4 10:05:30 ... Failed password for testuser from 198.51.100.25
+Nov  4 10:06:00 ... Failed password for testuser from 198.51.100.25
+Nov  4 10:06:30 ... Accepted password for testuser from 198.51.100.25</pre>
+        <p><strong>Analyst assessment:</strong> verify the login with the account owner, then inspect session activity, MFA status, credential changes, and related endpoint/network telemetry.</p>
+      </div>
+      <p class="disclaimer">All sample IP addresses are from documentation-only ranges. They represent synthetic lab data, not real attackers or production hosts.</p>
+    </section>
+
+    <section class="content-section">
+      <p class="eyebrow">05 / REPRODUCE</p><h2>Run it locally</h2>
+      <p>ThreatLens is a local CLI. Clone the repository, create a virtual environment, install the project, and analyze the included synthetic log.</p>
+      <pre>git clone https://github.com/Sudhakar-reddy20/threatlens.git
+cd threatlens
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e ".[dev]"
+threatlens analyze sample_logs/auth.log --year 2026</pre>
+      <p>By default, reports are written to <code>reports/threatlens_report.json</code> and <code>reports/threatlens_report.csv</code>. Thresholds and the output directory can be configured through CLI options.</p>
+      <a class="text-link" href="https://github.com/Sudhakar-reddy20/threatlens/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read installation and CLI documentation ↗</a>
+    </section>
+
+    <section class="content-section">
+      <p class="eyebrow">06 / ENGINEERING</p><h2>Implementation and quality checks</h2>
+      <div class="two-col">
+        <article class="panel"><h3>Core modules</h3><ul><li><code>parser.py</code> — SSH event parsing and validation</li><li><code>detector.py</code> — time-window detection and correlation</li><li><code>reporter.py</code> — JSON and CSV serialization</li><li><code>cli.py</code> — command-line arguments and orchestration</li></ul></article>
+        <article class="panel"><h3>Testing and safety</h3><ul><li>pytest tests cover parsing, thresholds, time boundaries, deduplication, evidence, and CLI behavior.</li><li>GitHub Actions runs the project test workflow across supported Python versions.</li><li>CSV output includes basic formula-injection mitigation.</li><li>Malformed or unsupported records are skipped and counted.</li></ul></article>
+      </div>
+      <p class="stack">Python 3.10+ · Standard library · pytest · GitHub Actions · MIT License</p>
+    </section>
+
+    <section class="content-section">
+      <p class="eyebrow">07 / LIMITATIONS</p><h2>What this project does not claim</h2>
+      <ul class="limitations">
+        <li>It analyzes local files; it does not ingest live logs or monitor endpoints continuously.</li>
+        <li>It is rule-based and only supports a focused subset of Linux SSH syslog formats.</li>
+        <li>Traditional syslog timestamps lack a year and timezone; the CLI accepts a year, and parsed timestamps are timezone-naive.</li>
+        <li>It does not block IP addresses, perform threat-intelligence lookups, or integrate with a SIEM.</li>
+        <li>An alert is a triage lead. Confirming an incident requires additional identity, host, and network evidence.</li>
+      </ul>
+      <p>Future work documented in the repository includes broader log-format support, MITRE ATT&amp;CK mapping, optional threat-intelligence enrichment, and possible SIEM integration.</p>
+    </section>
+
+    <section class="closing">
+      <p class="eyebrow">PROJECT / 001 · END OF CASE STUDY</p><h2>Evidence first. Conclusions second.</h2>
+      <p>ThreatLens is a practical exercise in building explainable detections and preserving the evidence an analyst needs to investigate them.</p>
+      <a class="button primary" href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">Explore ThreatLens on GitHub ↗</a>
+      <a class="text-link" href="index.html#security-tools">Return to portfolio</a>
+    </section>
+  </main>
+  <footer>© Onteddu Sudhakar Reddy · Cybersecurity / SOC portfolio</footer>
+</body>
+</html>
