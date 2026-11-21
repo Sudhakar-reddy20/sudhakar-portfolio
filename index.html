@@ -348,144 +348,156 @@
     </section>
 
     <!-- PORTFOLIO PILLARS -->
-    <section id="ctf-writeups" class="section portfolio-pillar">
+        <section id="ctf-writeups" class="section portfolio-pillar">
       <div class="container split">
         <h2 class="section-title">Lab &amp; CTF Writeups</h2>
         <div class="split-body">
-          <p class="lead">Practical notes from cybersecurity labs and CTF challenges, documented with the methodology, commands, evidence, lessons learned, and defensive takeaways.</p>
+          <p class="lead">Hands-on security practice documented as an analyst would: objective, scope, enumeration, evidence, finding, remediation, and lessons learned.</p>
           <div class="portfolio-grid">
             <article class="portfolio-card">
-              <p class="eyebrow">Learning track</p>
-              <h3>TryHackMe — Defensive &amp; Offensive Security</h3>
-              <p>Completed Search Skills, Defensive Security Intro, and Offensive Security Intro. Writeups are being organized into safe, reproducible walkthroughs.</p>
-              <span class="work-status">Writeups in progress</span>
+              <p class="eyebrow">Completed learning rooms</p>
+              <h3>TryHackMe — Security Fundamentals</h3>
+              <p>Completed Search Skills, Defensive Security Intro, and Offensive Security Intro. These rooms built familiarity with investigation workflows, defensive concepts, and the purpose of controlled offensive testing.</p>
+              <p class="stack">Search · Blue Team · Red Team fundamentals</p>
+              <span class="work-status">Rooms completed · Detailed writeups being added</span>
             </article>
             <article class="portfolio-card">
-              <p class="eyebrow">Practice track</p>
-              <h3>Hackversity &amp; hands-on labs</h3>
-              <p>Linux, networking, security principles, and guided practical exercises, with emphasis on evidence and what each finding means.</p>
-              <a href="https://hackversity.com" target="_blank" rel="noopener noreferrer">Visit Hackversity</a>
+              <p class="eyebrow">Current hands-on practice</p>
+              <h3>Linux &amp; service enumeration labs</h3>
+              <p>Practising service discovery, reading tool output, identifying exposed services, and following lab-provided exploitation paths in authorized training environments.</p>
+              <p class="stack">Linux · Nmap · Metasploit · Evidence notes</p>
+              <span class="work-status">Active practice</span>
             </article>
           </div>
         </div>
       </div>
     </section>
-
-    <section id="security-tools" class="section portfolio-pillar">
+        <section id="security-tools" class="section portfolio-pillar">
       <div class="container split">
         <h2 class="section-title">Security Tools</h2>
         <div class="split-body">
-          <p class="lead">Small, focused tools that turn security concepts into repeatable workflows.</p>
-          <div class="portfolio-grid">
-            <article class="portfolio-card">
-              <p class="eyebrow">Featured project</p>
-              <h3>ThreatLens</h3>
-              <p>Evidence-driven Python SOC log analysis and SSH threat detection platform.</p>
-              <p class="stack">Python · SOC · Log analysis · SSH</p>
-              <a href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">Explore the repository</a>
-            </article>
-            <article class="portfolio-card">
-              <p class="eyebrow">Prototype</p>
-              <h3>Failed Login Detection</h3>
-              <p>A lightweight log-analysis exercise that detects repeated authentication failures and a failed-login sequence followed by a successful login.</p>
-              <span class="work-status">Pocket SOC Lab exercise</span>
-            </article>
+          <p class="lead">A working project, not just a concept: ThreatLens analyzes Linux SSH authentication logs and produces evidence-backed alerts for analyst triage.</p>
+          <div class="portfolio-card featured-project">
+            <p class="eyebrow">Flagship project · Python · Blue Team</p>
+            <h3>ThreatLens — SSH Log Analysis &amp; Threat Detection</h3>
+            <p>Parses supported SSH authentication events, detects repeated failures and successful logins following failures, preserves original log lines, and exports JSON and CSV reports.</p>
+            <div class="project-facts">
+              <div><strong>2</strong><span>Detection rules</span></div>
+              <div><strong>10</strong><span>Parsed sample events</span></div>
+              <div><strong>2</strong><span>Expected triage alerts</span></div>
+            </div>
+            <p class="stack">Python 3.10+ · argparse · pytest · JSON · CSV · GitHub Actions</p>
+            <a href="threatlens.html">Open the full technical case study →</a>
+            <a href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">View source code on GitHub</a>
+            <span class="work-status">Implemented · Synthetic dataset · Local CLI</span>
+          </div>
+          <div class="portfolio-card">
+            <p class="eyebrow">Earlier lab exercise</p>
+            <h3>Pocket SOC — Authentication Detection Scripts</h3>
+            <p>Built standalone Python exercises for detecting five failed logins within a 60-second window and correlating failures followed by a successful login. This helped establish the detection concepts later expanded in ThreatLens.</p>
+            <span class="work-status">Built on portable USB lab</span>
           </div>
         </div>
       </div>
     </section>
-
-    <section id="home-lab" class="section portfolio-pillar">
+        <section id="home-lab" class="section portfolio-pillar">
       <div class="container split">
         <h2 class="section-title">Home SOC Lab</h2>
         <div class="split-body">
-          <p class="lead">A portable, low-cost practice environment for learning how analysts investigate authentication activity and validate detection logic.</p>
+          <p class="lead">A portable, zero-cost practice environment designed to make authentication detections repeatable without requiring a cloud SIEM or paid platform.</p>
           <div class="portfolio-card">
-            <p class="eyebrow">Personal lab</p>
+            <p class="eyebrow">Personal lab · MacBook Air · USB-based</p>
             <h3>Pocket SOC Lab</h3>
-            <p>Portable Python-based exercises with sample authentication logs, detection scripts, scenarios, reports, and a progress tracker. The lab includes repeated failed-login detection and failed-login-followed-by-success detection.</p>
+            <p>The lab is organized around sample datasets, detection scripts, scenarios, reports, and a progress tracker. It runs local Python scripts and keeps the practice material together on a USB drive.</p>
             <ul class="notes">
-              <li>Generate and inspect controlled sample log events.</li>
-              <li>Run detections and review the evidence behind each alert.</li>
-              <li>Record findings, limitations, and investigation notes.</li>
+              <li><strong>Scenario 01:</strong> five failed authentication attempts from one source within a 60-second detection window.</li>
+              <li><strong>Scenario 02:</strong> repeated failures followed by a successful login from the same source.</li>
+              <li><strong>Analyst note:</strong> repeated failures are a detection lead, not proof of compromise; validate the source, account, successful sessions, and surrounding activity.</li>
             </ul>
-            <span class="work-status">Built &amp; expanding</span>
+            <p class="stack">Python · Linux auth.log-style data · Rule-based detection · JSON progress tracking</p>
+            <span class="work-status">Built · Two detection scenarios recorded</span>
           </div>
         </div>
       </div>
     </section>
-
-    <section id="open-source" class="section portfolio-pillar">
+        <section id="open-source" class="section portfolio-pillar">
       <div class="container split">
         <h2 class="section-title">Open Source Contributions</h2>
         <div class="split-body">
-          <p class="lead">Contributing useful fixes, documentation, tests, and security improvements to community projects.</p>
+          <p class="lead">I use public repositories to practise readable code, tests, documentation, and repeatable development workflows.</p>
           <div class="portfolio-card">
-            <p class="eyebrow">Contribution log</p>
-            <h3>Community contributions</h3>
-            <p>This section will list verified pull requests and issues, including the problem, the change made, review feedback, and outcome.</p>
-            <a href="https://github.com/Sudhakar-reddy20" target="_blank" rel="noopener noreferrer">View GitHub profile</a>
-            <span class="work-status">Contribution log to be populated</span>
+            <p class="eyebrow">Transparent contribution record</p>
+            <h3>Contribution activity</h3>
+            <p>ThreatLens is currently my own public project. I am not listing it as an external open-source contribution. Verified community pull requests and accepted fixes will appear here when I have them.</p>
+            <p class="stack">Next focus: documentation fixes · reproducible bug reports · tests · small reviewed pull requests</p>
+            <a href="https://github.com/Sudhakar-reddy20" target="_blank" rel="noopener noreferrer">Review my public GitHub activity</a>
+            <span class="work-status">External contributions: none listed yet</span>
           </div>
         </div>
       </div>
     </section>
-
-    <section id="bug-reports" class="section portfolio-pillar">
+        <section id="bug-reports" class="section portfolio-pillar">
       <div class="container split">
         <h2 class="section-title">Responsible Security Reports</h2>
         <div class="split-body">
-          <p class="lead">A record of security issues investigated and responsibly disclosed within the owner's authorization and the applicable program rules.</p>
+          <p class="lead">Security testing should be authorized, reproducible, and useful to the system owner. I will publish only findings that can be responsibly disclosed.</p>
           <div class="portfolio-card">
-            <p class="eyebrow">Disclosure practice</p>
+            <p class="eyebrow">Disclosure standard</p>
             <h3>Verified findings only</h3>
-            <p>No unverified vulnerability claims are published here. When a report is eligible for disclosure, the entry will include scope, impact, reproducible evidence, remediation guidance, and disclosure status without exposing sensitive data.</p>
+            <p>No public vulnerability report is being claimed at this time. Future entries will document the authorized scope, affected component, reproducible steps, security impact, evidence with sensitive data removed, remediation, and disclosure status.</p>
+            <p class="stack">Authorization first · Minimal proof · No data access beyond scope · Coordinated disclosure</p>
             <span class="work-status">No public reports listed yet</span>
           </div>
         </div>
       </div>
     </section>
-
-    <section id="technical-blog" class="section portfolio-pillar">
+        <section id="technical-blog" class="section portfolio-pillar">
       <div class="container split">
         <h2 class="section-title">Technical Blog</h2>
         <div class="split-body">
-          <p class="lead">Short, practical articles explaining the concepts behind the labs, tools, and investigations.</p>
+          <p class="lead">Practical notes that explain the reasoning behind detections—not just commands to copy and paste.</p>
           <div class="portfolio-grid">
             <article class="portfolio-card">
-              <p class="eyebrow">Planned article</p>
-              <h3>How to investigate repeated SSH login failures</h3>
-              <p>Log fields to inspect, how to build a time-window detection, and why repeated failures alone do not prove account compromise.</p>
-              <span class="work-status">Draft topic</span>
+              <p class="eyebrow">Project field note</p>
+              <h3>Detecting repeated SSH failures</h3>
+              <p>How to group events by source IP, apply a rolling time window, avoid duplicate alerts for one continuous burst, and preserve the original log lines as evidence.</p>
+              <a href="threatlens.html#detection-logic">Read the technical breakdown →</a>
+              <span class="work-status">Published in project case study</span>
             </article>
             <article class="portfolio-card">
-              <p class="eyebrow">Planned article</p>
-              <h3>DNS, HTTP, and network fundamentals for SOC analysts</h3>
-              <p>A practical guide to the protocols and command-line tools used during first-line triage.</p>
-              <span class="work-status">Draft topic</span>
+              <p class="eyebrow">Analyst fundamentals</p>
+              <h3>Why a successful login after failures matters</h3>
+              <p>Correlating authentication events can raise investigation priority, but an alert is not a verdict. Verify account ownership, MFA, session activity, and endpoint context.</p>
+              <a href="threatlens.html#sample-investigation">Read the sample investigation →</a>
+              <span class="work-status">Published in project case study</span>
             </article>
           </div>
         </div>
       </div>
     </section>
-
-    <section id="teaching" class="section portfolio-pillar">
+        <section id="teaching" class="section portfolio-pillar">
       <div class="container split">
         <h2 class="section-title">Teaching &amp; Knowledge Sharing</h2>
         <div class="split-body">
-          <p class="lead">Turning what I learn into clear explanations, beginner-friendly notes, and practical demonstrations that help others build strong foundations.</p>
-          <div class="portfolio-card">
-            <p class="eyebrow">Knowledge sharing</p>
-            <h3>Learning notes &amp; demonstrations</h3>
-            <p>Planned tutorials and walkthroughs covering Linux, networking, log analysis, detection logic, and safe lab practice. Content will be added as it is completed and reviewed.</p>
-            <p class="stack">Explain · Demonstrate · Document · Improve</p>
-            <span class="work-status">Content in progress</span>
+          <p class="lead">I learn by breaking a topic into a simple explanation, a small demonstration, and a practical check that shows whether the idea is understood.</p>
+          <div class="portfolio-grid">
+            <article class="portfolio-card">
+              <p class="eyebrow">Learning resource</p>
+              <h3>Reading SSH authentication evidence</h3>
+              <p>Start with the timestamp, outcome, username, source address, and authentication method. Then group related events and compare them with successful logins in the same time window.</p>
+              <a href="threatlens.html#sample-investigation">Explore the worked example →</a>
+              <span class="work-status">Worked example available</span>
+            </article>
+            <article class="portfolio-card">
+              <p class="eyebrow">Teaching approach</p>
+              <h3>Explain · Demonstrate · Investigate</h3>
+              <p>My planned tutorials will use safe synthetic logs and authorized lab exercises, with the expected output, interpretation, common mistakes, and defensive next steps.</p>
+              <span class="work-status">More tutorials in development</span>
+            </article>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- CERTIFICATES -->
     <section id="certificates" class="section">
       <div class="container split">
         <h2 class="section-title">Certificates</h2>
