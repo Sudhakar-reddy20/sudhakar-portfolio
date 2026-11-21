@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="preloader.css" />
   <link rel="stylesheet" href="challenge.css" />
   <link rel="stylesheet" href="features.css" />
+  <link rel="stylesheet" href="portfolio-expansion.css" />
   <link rel="preload" href="boot-photo.jpg" as="image" />
 
   <!-- Runs before the page paints: shows the intro only when motion is allowed.
@@ -105,6 +106,13 @@
     <a href="#experience" data-nav="experience"><span class="dot" aria-hidden="true"></span><span class="label">Experience</span></a>
     <a href="#projects" data-nav="projects"><span class="dot" aria-hidden="true"></span><span class="label">Projects</span></a>
     <a href="#lab-work" data-nav="lab-work"><span class="dot" aria-hidden="true"></span><span class="label">Lab work</span></a>
+    <a href="#ctf-writeups" data-nav="ctf-writeups"><span class="dot" aria-hidden="true"></span><span class="label">CTF writeups</span></a>
+    <a href="#security-tools" data-nav="security-tools"><span class="dot" aria-hidden="true"></span><span class="label">Security tools</span></a>
+    <a href="#home-lab" data-nav="home-lab"><span class="dot" aria-hidden="true"></span><span class="label">Home lab</span></a>
+    <a href="#open-source" data-nav="open-source"><span class="dot" aria-hidden="true"></span><span class="label">Open source</span></a>
+    <a href="#bug-reports" data-nav="bug-reports"><span class="dot" aria-hidden="true"></span><span class="label">Bug reports</span></a>
+    <a href="#technical-blog" data-nav="technical-blog"><span class="dot" aria-hidden="true"></span><span class="label">Technical blog</span></a>
+    <a href="#teaching" data-nav="teaching"><span class="dot" aria-hidden="true"></span><span class="label">Teaching</span></a>
     <a href="#certificates" data-nav="certificates"><span class="dot" aria-hidden="true"></span><span class="label">Certificates</span></a>
     <a href="#skills" data-nav="skills"><span class="dot" aria-hidden="true"></span><span class="label">Skills</span></a>
     <a href="#contact" data-nav="contact"><span class="dot" aria-hidden="true"></span><span class="label">Contact</span></a>
@@ -335,6 +343,144 @@
           <p class="badge-legend"><span class="badge" aria-hidden="true"></span> earned <span class="badge is-wip" aria-hidden="true"></span> in progress</p>
           <p class="lab-note">Joined Hackversity about a month ago and has stayed in the top three of the leaderboard ever since.</p>
           <a href="https://hackversity.com" target="_blank" rel="noopener noreferrer">Visit Hackversity</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO PILLARS -->
+    <section id="ctf-writeups" class="section portfolio-pillar">
+      <div class="container split">
+        <h2 class="section-title">Lab &amp; CTF Writeups</h2>
+        <div class="split-body">
+          <p class="lead">Practical notes from cybersecurity labs and CTF challenges, documented with the methodology, commands, evidence, lessons learned, and defensive takeaways.</p>
+          <div class="portfolio-grid">
+            <article class="portfolio-card">
+              <p class="eyebrow">Learning track</p>
+              <h3>TryHackMe — Defensive &amp; Offensive Security</h3>
+              <p>Completed Search Skills, Defensive Security Intro, and Offensive Security Intro. Writeups are being organized into safe, reproducible walkthroughs.</p>
+              <span class="work-status">Writeups in progress</span>
+            </article>
+            <article class="portfolio-card">
+              <p class="eyebrow">Practice track</p>
+              <h3>Hackversity &amp; hands-on labs</h3>
+              <p>Linux, networking, security principles, and guided practical exercises, with emphasis on evidence and what each finding means.</p>
+              <a href="https://hackversity.com" target="_blank" rel="noopener noreferrer">Visit Hackversity</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="security-tools" class="section portfolio-pillar">
+      <div class="container split">
+        <h2 class="section-title">Security Tools</h2>
+        <div class="split-body">
+          <p class="lead">Small, focused tools that turn security concepts into repeatable workflows.</p>
+          <div class="portfolio-grid">
+            <article class="portfolio-card">
+              <p class="eyebrow">Featured project</p>
+              <h3>ThreatLens</h3>
+              <p>Evidence-driven Python SOC log analysis and SSH threat detection platform.</p>
+              <p class="stack">Python · SOC · Log analysis · SSH</p>
+              <a href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">Explore the repository</a>
+            </article>
+            <article class="portfolio-card">
+              <p class="eyebrow">Prototype</p>
+              <h3>Failed Login Detection</h3>
+              <p>A lightweight log-analysis exercise that detects repeated authentication failures and a failed-login sequence followed by a successful login.</p>
+              <span class="work-status">Pocket SOC Lab exercise</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="home-lab" class="section portfolio-pillar">
+      <div class="container split">
+        <h2 class="section-title">Home SOC Lab</h2>
+        <div class="split-body">
+          <p class="lead">A portable, low-cost practice environment for learning how analysts investigate authentication activity and validate detection logic.</p>
+          <div class="portfolio-card">
+            <p class="eyebrow">Personal lab</p>
+            <h3>Pocket SOC Lab</h3>
+            <p>Portable Python-based exercises with sample authentication logs, detection scripts, scenarios, reports, and a progress tracker. The lab includes repeated failed-login detection and failed-login-followed-by-success detection.</p>
+            <ul class="notes">
+              <li>Generate and inspect controlled sample log events.</li>
+              <li>Run detections and review the evidence behind each alert.</li>
+              <li>Record findings, limitations, and investigation notes.</li>
+            </ul>
+            <span class="work-status">Built &amp; expanding</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="open-source" class="section portfolio-pillar">
+      <div class="container split">
+        <h2 class="section-title">Open Source Contributions</h2>
+        <div class="split-body">
+          <p class="lead">Contributing useful fixes, documentation, tests, and security improvements to community projects.</p>
+          <div class="portfolio-card">
+            <p class="eyebrow">Contribution log</p>
+            <h3>Community contributions</h3>
+            <p>This section will list verified pull requests and issues, including the problem, the change made, review feedback, and outcome.</p>
+            <a href="https://github.com/Sudhakar-reddy20" target="_blank" rel="noopener noreferrer">View GitHub profile</a>
+            <span class="work-status">Contribution log to be populated</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="bug-reports" class="section portfolio-pillar">
+      <div class="container split">
+        <h2 class="section-title">Responsible Security Reports</h2>
+        <div class="split-body">
+          <p class="lead">A record of security issues investigated and responsibly disclosed within the owner's authorization and the applicable program rules.</p>
+          <div class="portfolio-card">
+            <p class="eyebrow">Disclosure practice</p>
+            <h3>Verified findings only</h3>
+            <p>No unverified vulnerability claims are published here. When a report is eligible for disclosure, the entry will include scope, impact, reproducible evidence, remediation guidance, and disclosure status without exposing sensitive data.</p>
+            <span class="work-status">No public reports listed yet</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="technical-blog" class="section portfolio-pillar">
+      <div class="container split">
+        <h2 class="section-title">Technical Blog</h2>
+        <div class="split-body">
+          <p class="lead">Short, practical articles explaining the concepts behind the labs, tools, and investigations.</p>
+          <div class="portfolio-grid">
+            <article class="portfolio-card">
+              <p class="eyebrow">Planned article</p>
+              <h3>How to investigate repeated SSH login failures</h3>
+              <p>Log fields to inspect, how to build a time-window detection, and why repeated failures alone do not prove account compromise.</p>
+              <span class="work-status">Draft topic</span>
+            </article>
+            <article class="portfolio-card">
+              <p class="eyebrow">Planned article</p>
+              <h3>DNS, HTTP, and network fundamentals for SOC analysts</h3>
+              <p>A practical guide to the protocols and command-line tools used during first-line triage.</p>
+              <span class="work-status">Draft topic</span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="teaching" class="section portfolio-pillar">
+      <div class="container split">
+        <h2 class="section-title">Teaching &amp; Knowledge Sharing</h2>
+        <div class="split-body">
+          <p class="lead">Turning what I learn into clear explanations, beginner-friendly notes, and practical demonstrations that help others build strong foundations.</p>
+          <div class="portfolio-card">
+            <p class="eyebrow">Knowledge sharing</p>
+            <h3>Learning notes &amp; demonstrations</h3>
+            <p>Planned tutorials and walkthroughs covering Linux, networking, log analysis, detection logic, and safe lab practice. Content will be added as it is completed and reviewed.</p>
+            <p class="stack">Explain · Demonstrate · Document · Improve</p>
+            <span class="work-status">Content in progress</span>
+          </div>
         </div>
       </div>
     </section>
