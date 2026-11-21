@@ -376,124 +376,26 @@
       <div class="container split">
         <h2 class="section-title">Security Tools</h2>
         <div class="split-body">
-          <p class="lead">A working project, not just a concept: ThreatLens analyzes Linux SSH authentication logs and produces evidence-backed alerts for analyst triage.</p>
+          <p class="lead">These are implemented Python projects with source code, sample datasets, test suites, documented detection logic, and reproducible commands—not just project concepts.</p>
           <div class="portfolio-card featured-project">
-            <p class="eyebrow">Flagship project · Python · Blue Team</p>
-            <h3>ThreatLens — SSH Log Analysis &amp; Threat Detection</h3>
-            <p>Parses supported SSH authentication events, detects repeated failures and successful logins following failures, preserves original log lines, and exports JSON and CSV reports.</p>
-            <div class="project-facts">
-              <div><strong>2</strong><span>Detection rules</span></div>
-              <div><strong>10</strong><span>Parsed sample events</span></div>
-              <div><strong>2</strong><span>Expected triage alerts</span></div>
-            </div>
-            <p class="stack">Python 3.10+ · argparse · pytest · JSON · CSV · GitHub Actions</p>
-            <a href="threatlens.html">Open the full technical case study →</a>
-            <a href="https://github.com/Sudhakar-reddy20/threatlens" target="_blank" rel="noopener noreferrer">View source code on GitHub</a>
-            <span class="work-status">Implemented · Synthetic dataset · Local CLI</span>
+            <p class="eyebrow">Project 01 · Linux · SSH · Blue Team</p>
+            <h3>ThreatLens — SSH Log Analysis</h3>
+            <p>Built a command-line analyzer that parses Linux SSH authentication events, detects repeated failures and failure-to-success patterns, preserves original log evidence, and exports JSON/CSV reports.</p>
+            <div class="project-facts"><div><strong>2</strong><span>SSH detection rules</span></div><div><strong>10</strong><span>Supported sample events</span></div><div><strong>4</strong><span>Python CI versions</span></div></div>
+            <p class="stack">Python · pytest · argparse · JSON · CSV · GitHub Actions</p>
+            <a href="threatlens.html">Read the technical case study →</a>
+            <a href="https://github.com/Sudhakar-reddy20/threatlens/tree/main/src/threatlens" target="_blank" rel="noopener noreferrer">Inspect parser, detector and reporter source ↗</a>
+            <a href="https://github.com/Sudhakar-reddy20/threatlens/tree/main/tests" target="_blank" rel="noopener noreferrer">Inspect the test suite ↗</a>
+            <span class="work-status">Implemented · Synthetic dataset · CI workflow</span>
           </div>
           <div class="portfolio-card">
-            <p class="eyebrow">Earlier lab exercise</p>
-            <h3>Pocket SOC — Authentication Detection Scripts</h3>
-            <p>Built standalone Python exercises for detecting five failed logins within a 60-second window and correlating failures followed by a successful login. This helped establish the detection concepts later expanded in ThreatLens.</p>
-            <span class="work-status">Built on portable USB lab</span>
-          </div>
-        </div>
-      </div>
-    </section>
-        <section id="home-lab" class="section portfolio-pillar">
-      <div class="container split">
-        <h2 class="section-title">Home SOC Lab</h2>
-        <div class="split-body">
-          <p class="lead">A portable, zero-cost practice environment designed to make authentication detections repeatable without requiring a cloud SIEM or paid platform.</p>
-          <div class="portfolio-card">
-            <p class="eyebrow">Personal lab · MacBook Air · USB-based</p>
-            <h3>Pocket SOC Lab</h3>
-            <p>The lab is organized around sample datasets, detection scripts, scenarios, reports, and a progress tracker. It runs local Python scripts and keeps the practice material together on a USB drive.</p>
-            <ul class="notes">
-              <li><strong>Scenario 01:</strong> five failed authentication attempts from one source within a 60-second detection window.</li>
-              <li><strong>Scenario 02:</strong> repeated failures followed by a successful login from the same source.</li>
-              <li><strong>Analyst note:</strong> repeated failures are a detection lead, not proof of compromise; validate the source, account, successful sessions, and surrounding activity.</li>
-            </ul>
-            <p class="stack">Python · Linux auth.log-style data · Rule-based detection · JSON progress tracking</p>
-            <span class="work-status">Built · Two detection scenarios recorded</span>
-          </div>
-        </div>
-      </div>
-    </section>
-        <section id="open-source" class="section portfolio-pillar">
-      <div class="container split">
-        <h2 class="section-title">Open Source Contributions</h2>
-        <div class="split-body">
-          <p class="lead">I use public repositories to practise readable code, tests, documentation, and repeatable development workflows.</p>
-          <div class="portfolio-card">
-            <p class="eyebrow">Transparent contribution record</p>
-            <h3>Contribution activity</h3>
-            <p>ThreatLens is currently my own public project. I am not listing it as an external open-source contribution. Verified community pull requests and accepted fixes will appear here when I have them.</p>
-            <p class="stack">Next focus: documentation fixes · reproducible bug reports · tests · small reviewed pull requests</p>
-            <a href="https://github.com/Sudhakar-reddy20" target="_blank" rel="noopener noreferrer">Review my public GitHub activity</a>
-            <span class="work-status">External contributions: none listed yet</span>
-          </div>
-        </div>
-      </div>
-    </section>
-        <section id="bug-reports" class="section portfolio-pillar">
-      <div class="container split">
-        <h2 class="section-title">Responsible Security Reports</h2>
-        <div class="split-body">
-          <p class="lead">Security testing should be authorized, reproducible, and useful to the system owner. I will publish only findings that can be responsibly disclosed.</p>
-          <div class="portfolio-card">
-            <p class="eyebrow">Disclosure standard</p>
-            <h3>Verified findings only</h3>
-            <p>No public vulnerability report is being claimed at this time. Future entries will document the authorized scope, affected component, reproducible steps, security impact, evidence with sensitive data removed, remediation, and disclosure status.</p>
-            <p class="stack">Authorization first · Minimal proof · No data access beyond scope · Coordinated disclosure</p>
-            <span class="work-status">No public reports listed yet</span>
-          </div>
-        </div>
-      </div>
-    </section>
-        <section id="technical-blog" class="section portfolio-pillar">
-      <div class="container split">
-        <h2 class="section-title">Technical Blog</h2>
-        <div class="split-body">
-          <p class="lead">Practical notes that explain the reasoning behind detections—not just commands to copy and paste.</p>
-          <div class="portfolio-grid">
-            <article class="portfolio-card">
-              <p class="eyebrow">Project field note</p>
-              <h3>Detecting repeated SSH failures</h3>
-              <p>How to group events by source IP, apply a rolling time window, avoid duplicate alerts for one continuous burst, and preserve the original log lines as evidence.</p>
-              <a href="threatlens.html#detection-logic">Read the technical breakdown →</a>
-              <span class="work-status">Published in project case study</span>
-            </article>
-            <article class="portfolio-card">
-              <p class="eyebrow">Analyst fundamentals</p>
-              <h3>Why a successful login after failures matters</h3>
-              <p>Correlating authentication events can raise investigation priority, but an alert is not a verdict. Verify account ownership, MFA, session activity, and endpoint context.</p>
-              <a href="threatlens.html#sample-investigation">Read the sample investigation →</a>
-              <span class="work-status">Published in project case study</span>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-        <section id="teaching" class="section portfolio-pillar">
-      <div class="container split">
-        <h2 class="section-title">Teaching &amp; Knowledge Sharing</h2>
-        <div class="split-body">
-          <p class="lead">I learn by breaking a topic into a simple explanation, a small demonstration, and a practical check that shows whether the idea is understood.</p>
-          <div class="portfolio-grid">
-            <article class="portfolio-card">
-              <p class="eyebrow">Learning resource</p>
-              <h3>Reading SSH authentication evidence</h3>
-              <p>Start with the timestamp, outcome, username, source address, and authentication method. Then group related events and compare them with successful logins in the same time window.</p>
-              <a href="threatlens.html#sample-investigation">Explore the worked example →</a>
-              <span class="work-status">Worked example available</span>
-            </article>
-            <article class="portfolio-card">
-              <p class="eyebrow">Teaching approach</p>
-              <h3>Explain · Demonstrate · Investigate</h3>
-              <p>My planned tutorials will use safe synthetic logs and authorized lab exercises, with the expected output, interpretation, common mistakes, and defensive next steps.</p>
-              <span class="work-status">More tutorials in development</span>
-            </article>
+            <p class="eyebrow">Project 02 · Windows Security · Event XML</p>
+            <h3>Windows Event Log Analyzer</h3>
+            <p>Built a separate Python CLI that analyzes exported Windows Security Event XML. It extracts selected event IDs, detects repeated failed logons, correlates success after failures, and flags account or audit changes.</p>
+            <p class="stack">Python · XML parsing · Event IDs 4624/4625/4720/4728/4732/1102 · unittest · JSON/CSV</p>
+            <a href="windows-event-log-analyzer.html">Read the technical case study →</a>
+            <a href="https://github.com/Sudhakar-reddy20/threatlens/tree/main/projects/windows-event-log-analyzer" target="_blank" rel="noopener noreferrer">Inspect source, sample XML and tests ↗</a>
+            <span class="work-status">Implemented · Synthetic XML · CI workflow</span>
           </div>
         </div>
       </div>
