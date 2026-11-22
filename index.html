@@ -36,9 +36,6 @@
   <link rel="stylesheet" href="challenge.css" />
   <link rel="stylesheet" href="features.css" />
   <link rel="preload" href="boot-photo.jpg" as="image" />
-
-  <!-- Runs before the page paints: shows the intro only when motion is allowed.
-       Safety net: if the intro script never finishes, the page opens after 12 seconds. -->
   <script>
     (function () {
       var root = document.documentElement;
@@ -55,7 +52,6 @@
   </script>
 </head>
 <body>
-  <!-- PRELOADER: a cracked display that gets repaired, then opens the site -->
   <div class="preloader" id="preloader" role="dialog" aria-modal="true" aria-label="Display repair intro">
     <div class="pl-stage">
       <div class="pl-tilt">
@@ -83,9 +79,7 @@
   </div>
 
   <a class="skip-link" href="#about">Skip to content</a>
-
   <a class="brand" href="#home" aria-label="Home">SR<span class="brand-full"> Onteddu Sudhakar Reddy</span></a>
-
   <div class="spotlight" aria-hidden="true"></div>
   <div class="cursor-dot" aria-hidden="true"></div>
   <div class="cursor-ring" aria-hidden="true"></div>
@@ -98,7 +92,6 @@
     <button type="button" class="calm-toggle" id="calm-toggle" aria-pressed="false">Calm</button>
   </div>
 
-  <!-- Side navigation: a slim rail that opens on hover (right edge on phones) -->
   <nav class="side-nav" aria-label="Sections">
     <a href="#home" data-nav="home"><span class="dot" aria-hidden="true"></span><span class="label">Home</span></a>
     <a href="#about" data-nav="about"><span class="dot" aria-hidden="true"></span><span class="label">About</span></a>
@@ -115,7 +108,6 @@
   </a>
 
   <main>
-    <!-- HERO -->
     <section id="home" class="hero" aria-labelledby="hero-title">
       <svg class="skyline" viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
         <defs>
@@ -206,7 +198,6 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
     <section id="about" class="section">
       <div class="container split">
         <h2 class="section-title">About</h2>
@@ -230,7 +221,6 @@
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
     <section id="experience" class="section">
       <div class="container split">
         <h2 class="section-title">Experience</h2>
@@ -266,7 +256,6 @@
       </div>
     </section>
 
-    <!-- PROJECTS -->
     <section id="projects" class="section">
       <div class="container split">
         <h2 class="section-title">Projects</h2>
@@ -308,7 +297,6 @@
       </div>
     </section>
 
-    <!-- LAB WORK -->
     <section id="lab-work" class="section">
       <div class="container split">
         <h2 class="section-title">Lab work</h2>
@@ -334,12 +322,12 @@
           <div class="badge-wall" role="img" aria-label="Hackversity badges: 12 earned, 2 in progress"><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge"></span><span class="badge is-wip"></span><span class="badge is-wip"></span></div>
           <p class="badge-legend"><span class="badge" aria-hidden="true"></span> earned <span class="badge is-wip" aria-hidden="true"></span> in progress</p>
           <p class="lab-note">Joined Hackversity about a month ago and has stayed in the top three of the leaderboard ever since.</p>
+          <p class="lab-note">LetsDefend achievement: <a href="https://app.letsdefend.io/my-rewards/detail/ccfc38be953046369112344c48ac3334" target="_blank" rel="noopener noreferrer">View earned reward</a></p>
           <a href="https://hackversity.com" target="_blank" rel="noopener noreferrer">Visit Hackversity</a>
         </div>
       </div>
     </section>
 
-    <!-- CERTIFICATES -->
     <section id="certificates" class="section">
       <div class="container split">
         <h2 class="section-title">Certificates</h2>
@@ -408,7 +396,6 @@
       </div>
     </section>
 
-    <!-- SKILLS -->
     <section id="skills" class="section">
       <div class="container split">
         <h2 class="section-title">Skills</h2>
@@ -439,7 +426,6 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact" class="section">
       <div class="container split">
         <h2 class="section-title">Contact</h2>
@@ -478,13 +464,11 @@
           <div class="contact-actions">
             <a class="btn btn-primary" href="resume.pdf" download>Download resume</a>
             <button class="btn btn-ghost summary-btn" type="button">Copy my summary</button>
-            <!-- Paste your Calendly or Cal.com link in href, then delete the hidden attribute -->
             <a class="btn btn-ghost booking-btn" href="https://cal.com/YOUR-USERNAME" target="_blank" rel="noopener noreferrer" hidden>Book an interview</a>
           </div>
         </div>
       </div>
     </section>
-  <!-- CHALLENGE -->
     <section id="challenge" class="section">
       <div class="container split">
         <h2 class="section-title">Challenge</h2>
