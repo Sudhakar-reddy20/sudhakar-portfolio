@@ -35,7 +35,6 @@
   <link rel="stylesheet" href="preloader.css" />
   <link rel="stylesheet" href="challenge.css" />
   <link rel="stylesheet" href="features.css" />
-  <link rel="stylesheet" href="portfolio-expansion.css" />
   <link rel="preload" href="boot-photo.jpg" as="image" />
 
   <!-- Runs before the page paints: shows the intro only when motion is allowed.
@@ -106,13 +105,6 @@
     <a href="#experience" data-nav="experience"><span class="dot" aria-hidden="true"></span><span class="label">Experience</span></a>
     <a href="#projects" data-nav="projects"><span class="dot" aria-hidden="true"></span><span class="label">Projects</span></a>
     <a href="#lab-work" data-nav="lab-work"><span class="dot" aria-hidden="true"></span><span class="label">Lab work</span></a>
-    <a href="#ctf-writeups" data-nav="ctf-writeups"><span class="dot" aria-hidden="true"></span><span class="label">CTF writeups</span></a>
-    <a href="#security-tools" data-nav="security-tools"><span class="dot" aria-hidden="true"></span><span class="label">Security tools</span></a>
-    <a href="#home-lab" data-nav="home-lab"><span class="dot" aria-hidden="true"></span><span class="label">Home lab</span></a>
-    <a href="#open-source" data-nav="open-source"><span class="dot" aria-hidden="true"></span><span class="label">Open source</span></a>
-    <a href="#bug-reports" data-nav="bug-reports"><span class="dot" aria-hidden="true"></span><span class="label">Bug reports</span></a>
-    <a href="#technical-blog" data-nav="technical-blog"><span class="dot" aria-hidden="true"></span><span class="label">Technical blog</span></a>
-    <a href="#teaching" data-nav="teaching"><span class="dot" aria-hidden="true"></span><span class="label">Teaching</span></a>
     <a href="#certificates" data-nav="certificates"><span class="dot" aria-hidden="true"></span><span class="label">Certificates</span></a>
     <a href="#skills" data-nav="skills"><span class="dot" aria-hidden="true"></span><span class="label">Skills</span></a>
     <a href="#contact" data-nav="contact"><span class="dot" aria-hidden="true"></span><span class="label">Contact</span></a>
@@ -347,59 +339,7 @@
       </div>
     </section>
 
-    <!-- PORTFOLIO PILLARS -->
-        <section id="ctf-writeups" class="section portfolio-pillar">
-      <div class="container split">
-        <h2 class="section-title">Lab &amp; CTF Writeups</h2>
-        <div class="split-body">
-          <p class="lead">Hands-on security practice documented as an analyst would: objective, scope, enumeration, evidence, finding, remediation, and lessons learned.</p>
-          <div class="portfolio-grid">
-            <article class="portfolio-card">
-              <p class="eyebrow">Completed learning rooms</p>
-              <h3>TryHackMe — Security Fundamentals</h3>
-              <p>Completed Search Skills, Defensive Security Intro, and Offensive Security Intro. These rooms built familiarity with investigation workflows, defensive concepts, and the purpose of controlled offensive testing.</p>
-              <p class="stack">Search · Blue Team · Red Team fundamentals</p>
-              <span class="work-status">Rooms completed · Detailed writeups being added</span>
-            </article>
-            <article class="portfolio-card">
-              <p class="eyebrow">Current hands-on practice</p>
-              <h3>Linux &amp; service enumeration labs</h3>
-              <p>Practising service discovery, reading tool output, identifying exposed services, and following lab-provided exploitation paths in authorized training environments.</p>
-              <p class="stack">Linux · Nmap · Metasploit · Evidence notes</p>
-              <span class="work-status">Active practice</span>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-        <section id="security-tools" class="section portfolio-pillar">
-      <div class="container split">
-        <h2 class="section-title">Security Tools</h2>
-        <div class="split-body">
-          <p class="lead">These are implemented Python projects with source code, sample datasets, test suites, documented detection logic, and reproducible commands—not just project concepts.</p>
-          <div class="portfolio-card featured-project">
-            <p class="eyebrow">Project 01 · Linux · SSH · Blue Team</p>
-            <h3>ThreatLens — SSH Log Analysis</h3>
-            <p>Built a command-line analyzer that parses Linux SSH authentication events, detects repeated failures and failure-to-success patterns, preserves original log evidence, and exports JSON/CSV reports.</p>
-            <div class="project-facts"><div><strong>2</strong><span>SSH detection rules</span></div><div><strong>10</strong><span>Supported sample events</span></div><div><strong>4</strong><span>Python CI versions</span></div></div>
-            <p class="stack">Python · pytest · argparse · JSON · CSV · GitHub Actions</p>
-            <a href="threatlens.html">Read the technical case study →</a>
-            <a href="https://github.com/Sudhakar-reddy20/threatlens/tree/main/src/threatlens" target="_blank" rel="noopener noreferrer">Inspect parser, detector and reporter source ↗</a>
-            <a href="https://github.com/Sudhakar-reddy20/threatlens/tree/main/tests" target="_blank" rel="noopener noreferrer">Inspect the test suite ↗</a>
-            <span class="work-status">Implemented · Synthetic dataset · CI workflow</span>
-          </div>
-          <div class="portfolio-card">
-            <p class="eyebrow">Project 02 · Windows Security · Event XML</p>
-            <h3>Windows Event Log Analyzer</h3>
-            <p>Built a separate Python CLI that analyzes exported Windows Security Event XML. It extracts selected event IDs, detects repeated failed logons, correlates success after failures, and flags account or audit changes.</p>
-            <p class="stack">Python · XML parsing · Event IDs 4624/4625/4720/4728/4732/1102 · unittest · JSON/CSV</p>
-            <a href="windows-event-log-analyzer.html">Read the technical case study →</a>
-            <a href="https://github.com/Sudhakar-reddy20/threatlens/tree/main/projects/windows-event-log-analyzer" target="_blank" rel="noopener noreferrer">Inspect source, sample XML and tests ↗</a>
-            <span class="work-status">Implemented · Synthetic XML · CI workflow</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- CERTIFICATES -->
     <section id="certificates" class="section">
       <div class="container split">
         <h2 class="section-title">Certificates</h2>
